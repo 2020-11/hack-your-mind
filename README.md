@@ -16,7 +16,8 @@ Luego abre http://localhost:4173.
 
 - Hero con la constelación de puntos que se ordena en la H (respeta `prefers-reduced-motion`).
 - Diagnóstico de 60 segundos: "¿Qué mundo necesitas hoy?". El resultado se guarda solo en el dispositivo.
-- Los cinco mundos (Mente, Crecimiento, Liderazgo, Negocio, Futuro) y ejercicios con su fuente.
+- Los cinco mundos (Mente, Crecimiento, Liderazgo, Negocio, Futuro) y 20 ejercicios, cada uno con su fuente.
+- Recomendaciones: podcasts, música para focus y libros.
 - Gamificación ética, privacidad por diseño (exportar y borrar datos funcionan) y footer completo.
 - Español e inglés, tema claro (Papel) y oscuro (Noche).
 

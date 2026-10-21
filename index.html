@@ -69,6 +69,7 @@ body {
   overflow-x: hidden;
 }
 img, svg, canvas { display: block; }
+[hidden] { display: none !important; }
 a { color: var(--link); text-underline-offset: 3px; }
 button { font: inherit; color: inherit; }
 :focus { outline: none; }
@@ -172,7 +173,7 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
   .icon-btn { width: 36px; height: 36px; }
   .lang button { padding: 5px 8px; }
 }
-@media (min-width: 900px) {
+@media (min-width: 1040px) {
   .nav { display: flex; }
   .header-tools { margin-left: var(--space-6); }
   .menu-btn, .mobile-nav { display: none !important; }
@@ -286,7 +287,30 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
 .ex-source { font-size: 14px; line-height: 22px; padding: var(--space-3) 0 0; border-top: 1px solid var(--line); }
 .ex-source span { font: 500 11px/16px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink); margin-right: 6px; }
 .ex-card .data { color: var(--ink); }
-.ex-count { margin: var(--space-6) 0 0; }
+.ex-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-6); }
+.ex-count { margin: 0; }
+
+/* ---------- Recomendaciones ---------- */
+.chip svg { width: 18px; height: 18px; flex: none; }
+.chip[aria-selected="true"] { background: var(--inverse); color: var(--on-inverse); border-color: var(--inverse); }
+.rec-panel { border-radius: var(--radius-md); }
+.rec-panel + .rec-panel { margin-top: var(--space-12); }
+.rec-panel-title { margin-bottom: var(--space-4); }
+.recs.is-live .rec-panel + .rec-panel { margin-top: 0; }
+.recs.is-live .rec-panel-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.recs.is-live .rec-panel:not([hidden]) { animation: fadeUp .4s ease-out; }
+.rec-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
+@media (min-width: 700px) { .rec-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .rec-grid { grid-template-columns: repeat(3, 1fr); } }
+.rec-card { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-6); border-radius: var(--radius-md); background: var(--paper-raised); border: 1px solid var(--line); }
+.rec-card > .data { margin: 0; }
+.rec-title { font: 600 21px/27px var(--sans); letter-spacing: -0.015em; margin: var(--space-1) 0 0; }
+.rec-by { margin: 0; font-weight: 500; color: var(--ink); font-size: 15px; }
+.rec-card .desc { margin: 0; color: var(--ink-muted); flex: 1; }
+.rec-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-2); padding-top: var(--space-3); border-top: 1px solid var(--line); }
+.rec-foot a { font-weight: 600; white-space: nowrap; }
+.rec-note { margin: 0 0 var(--space-4); padding: var(--space-6); border-radius: var(--radius-md); border: 1px solid var(--line); background: var(--paper); color: var(--ink-muted); max-width: 80ch; }
+.rec-note-label { display: block; font: 500 12px/16px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink); margin-bottom: var(--space-2); }
 
 /* ---------- Privacidad (problema crítico 3: contraste) ---------- */
 .privacy-grid { display: grid; gap: var(--space-8); }
@@ -370,6 +394,7 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
       <a href="#diagnostico" data-i18n="nav.quiz">Diagnóstico</a>
       <a href="#mundos" data-i18n="nav.worlds">Mundos</a>
       <a href="#ejercicios" data-i18n="nav.exercises">Ejercicios</a>
+      <a href="#recomendaciones" data-i18n="nav.recs">Recomendaciones</a>
       <a href="#privacidad" data-i18n="nav.privacy">Privacidad</a>
     </nav>
     <div class="header-tools">
@@ -389,6 +414,7 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
     <a href="#diagnostico" data-i18n="nav.quiz">Diagnóstico</a>
     <a href="#mundos" data-i18n="nav.worlds">Mundos</a>
     <a href="#ejercicios" data-i18n="nav.exercises">Ejercicios</a>
+    <a href="#recomendaciones" data-i18n="nav.recs">Recomendaciones</a>
     <a href="#privacidad" data-i18n="nav.privacy">Privacidad</a>
   </nav>
 </header>
@@ -498,35 +524,35 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
           <h3 class="heading" data-i18n="w.mind">Mente</h3>
           <p class="quote" data-i18n="w.mind.q">¿Qué es lo que crees que sabes?</p>
           <p class="desc" data-i18n="w.mind.d">Sesgos, decisiones y atención: cómo funciona tu cabeza, para usarla mejor.</p>
-          <div class="world-meta data"><span data-i18n="w.mind.m">2 ejercicios · 25 min</span><span class="go" aria-hidden="true">→</span></div>
+          <div class="world-meta data"><span data-i18n="w.mind.m">4 ejercicios · 47 min</span><span class="go" aria-hidden="true">→</span></div>
         </a>
         <a class="world-card reveal" href="#ejercicios" data-world="growth" data-goto="growth">
           <span class="world-num"><span class="dot"></span>02</span>
           <h3 class="heading" data-i18n="w.growth">Crecimiento</h3>
           <p class="quote" data-i18n="w.growth.q">¿Por qué reaccionas como reaccionas?</p>
           <p class="desc" data-i18n="w.growth.d">Emociones, hábitos y valores. Entenderte sin juzgarte.</p>
-          <div class="world-meta data"><span data-i18n="w.growth.m">2 ejercicios · 20 min</span><span class="go" aria-hidden="true">→</span></div>
+          <div class="world-meta data"><span data-i18n="w.growth.m">4 ejercicios · 41 min</span><span class="go" aria-hidden="true">→</span></div>
         </a>
         <a class="world-card reveal" href="#ejercicios" data-world="leadership" data-goto="leadership">
           <span class="world-num"><span class="dot"></span>03</span>
           <h3 class="heading" data-i18n="w.leadership">Liderazgo</h3>
           <p class="quote" data-i18n="w.leadership.q">¿Qué pasa en una sala cuando tú hablas?</p>
           <p class="desc" data-i18n="w.leadership.d">Habilidades humanas: escuchar, dar feedback y sostener conversaciones difíciles.</p>
-          <div class="world-meta data"><span data-i18n="w.leadership.m">2 ejercicios · 27 min</span><span class="go" aria-hidden="true">→</span></div>
+          <div class="world-meta data"><span data-i18n="w.leadership.m">4 ejercicios · 45 min</span><span class="go" aria-hidden="true">→</span></div>
         </a>
         <a class="world-card reveal" href="#ejercicios" data-world="business" data-goto="business">
           <span class="world-num"><span class="dot"></span>04</span>
           <h3 class="heading" data-i18n="w.business">Negocio</h3>
           <p class="quote" data-i18n="w.business.q">¿Qué problema resuelves de verdad?</p>
           <p class="desc" data-i18n="w.business.d">Pensar como alguien que construye: valor, riesgo y decisiones con información incompleta.</p>
-          <div class="world-meta data"><span data-i18n="w.business.m">2 ejercicios · 22 min</span><span class="go" aria-hidden="true">→</span></div>
+          <div class="world-meta data"><span data-i18n="w.business.m">4 ejercicios · 44 min</span><span class="go" aria-hidden="true">→</span></div>
         </a>
         <a class="world-card reveal" href="#ejercicios" data-world="future" data-goto="future">
           <span class="world-num"><span class="dot"></span>05</span>
           <h3 class="heading" data-i18n="w.future">Futuro</h3>
           <p class="quote" data-i18n="w.future.q">¿Qué harás cuando cambien las reglas?</p>
           <p class="desc" data-i18n="w.future.d">Navegar el cambio, la IA y la incertidumbre con criterio, no con miedo.</p>
-          <div class="world-meta data"><span data-i18n="w.future.m">2 ejercicios · 25 min</span><span class="go" aria-hidden="true">→</span></div>
+          <div class="world-meta data"><span data-i18n="w.future.m">4 ejercicios · 47 min</span><span class="go" aria-hidden="true">→</span></div>
         </a>
       </div>
     </div>
@@ -583,6 +609,20 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
           <p class="ex-source"><span data-i18n="src">Fuente</span>Klein (2007), <i>Harvard Business Review</i></p>
           <p class="data" data-i18n="e2.m">15 min · +40 Hack Points</p>
         </article>
+        <article class="ex-card" data-world="mind">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.mind">Mente</span></span>
+          <h3 class="heading" data-i18n="e11.t">Considera lo opuesto</h3>
+          <p class="desc" data-i18n="e11.d">Antes de cerrar una opinión, escribe tres razones por las que podrías estar equivocado. Funciona mejor que "intentar ser objetivo".</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Lord, Lepper &amp; Preston (1984), <i>Journal of Personality and Social Psychology</i></p>
+          <p class="data" data-i18n="e11.m">10 min · +30 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="mind">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.mind">Mente</span></span>
+          <h3 class="heading" data-i18n="e12.t">Una cosa a la vez</h3>
+          <p class="desc" data-i18n="e12.d">Cambiar de tarea cuesta tiempo aunque no lo notes. Mide tu propio costo con dos rondas cronometradas.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Rubinstein, Meyer &amp; Evans (2001), <i>Journal of Experimental Psychology: Human Perception and Performance</i></p>
+          <p class="data" data-i18n="e12.m">12 min · +35 Hack Points</p>
+        </article>
         <article class="ex-card" data-world="growth">
           <span class="ex-world"><span class="dot"></span><span data-i18n="w.growth">Crecimiento</span></span>
           <h3 class="heading" data-i18n="e3.t">Háblate en tercera persona</h3>
@@ -596,6 +636,20 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
           <p class="desc" data-i18n="e4.d">Practica cambiar la lectura de una situación antes de que la emoción decida por ti.</p>
           <p class="ex-source"><span data-i18n="src">Fuente</span>Gross (1998), <i>Review of General Psychology</i></p>
           <p class="data" data-i18n="e4.m">12 min · +35 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="growth">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.growth">Crecimiento</span></span>
+          <h3 class="heading" data-i18n="e13.t">Escribe lo que te pesa</h3>
+          <p class="desc" data-i18n="e13.d">Quince minutos de escritura sobre lo que te preocupa, cuatro días seguidos. Sin corregir y sin enseñárselo a nadie.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Pennebaker &amp; Beall (1986), <i>Journal of Abnormal Psychology</i></p>
+          <p class="data" data-i18n="e13.m">15 min · +40 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="growth">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.growth">Crecimiento</span></span>
+          <h3 class="heading" data-i18n="e14.t">Ponle nombre a la emoción</h3>
+          <p class="desc" data-i18n="e14.d">Decir "esto es frustración" le baja el volumen a la emoción. Practica nombrarla con precisión.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Lieberman et al. (2007), <i>Psychological Science</i></p>
+          <p class="data" data-i18n="e14.m">6 min · +20 Hack Points</p>
         </article>
         <article class="ex-card" data-world="leadership">
           <span class="ex-world"><span class="dot"></span><span data-i18n="w.leadership">Liderazgo</span></span>
@@ -611,6 +665,20 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
           <p class="ex-source"><span data-i18n="src">Fuente</span>Kluger &amp; DeNisi (1996), <i>Psychological Bulletin</i></p>
           <p class="data" data-i18n="e6.m">12 min · +35 Hack Points</p>
         </article>
+        <article class="ex-card" data-world="leadership">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.leadership">Liderazgo</span></span>
+          <h3 class="heading" data-i18n="e15.t">Pregunta, y vuelve a preguntar</h3>
+          <p class="desc" data-i18n="e15.d">Quien hace preguntas de seguimiento cae mejor. Ponlo a prueba en tu próxima conversación.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Huang et al. (2017), <i>Journal of Personality and Social Psychology</i></p>
+          <p class="data" data-i18n="e15.m">10 min · +30 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="leadership">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.leadership">Liderazgo</span></span>
+          <h3 class="heading" data-i18n="e16.t">Un gracias que se nota</h3>
+          <p class="desc" data-i18n="e16.d">Agradecer de forma concreta hace que la gente ayude más después. Escribe tres agradecimientos específicos.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Grant &amp; Gino (2010), <i>Journal of Personality and Social Psychology</i></p>
+          <p class="data" data-i18n="e16.m">8 min · +25 Hack Points</p>
+        </article>
         <article class="ex-card" data-world="business">
           <span class="ex-world"><span class="dot"></span><span data-i18n="w.business">Negocio</span></span>
           <h3 class="heading" data-i18n="e7.t">Si pasa esto, haré aquello</h3>
@@ -624,6 +692,20 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
           <p class="desc" data-i18n="e8.d">Autonomía, competencia y vínculo: revisa cuál de las tres le falta a tu proyecto.</p>
           <p class="ex-source"><span data-i18n="src">Fuente</span>Ryan &amp; Deci (2000), <i>American Psychologist</i></p>
           <p class="data" data-i18n="e8.m">12 min · +35 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="business">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.business">Negocio</span></span>
+          <h3 class="heading" data-i18n="e17.t">Estima con la vista de afuera</h3>
+          <p class="desc" data-i18n="e17.d">Subestimamos cuánto vamos a tardar, incluso cuando ya nos pasó antes. Usa tus proyectos anteriores como referencia.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Buehler, Griffin &amp; Ross (1994), <i>Journal of Personality and Social Psychology</i></p>
+          <p class="data" data-i18n="e17.m">12 min · +35 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="business">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.business">Negocio</span></span>
+          <h3 class="heading" data-i18n="e18.t">Suelta lo que ya pagaste</h3>
+          <p class="desc" data-i18n="e18.d">Lo invertido no vuelve. Revisa un proyecto que sigues solo porque ya le pusiste tiempo o dinero.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Arkes &amp; Blumer (1985), <i>Organizational Behavior and Human Decision Processes</i></p>
+          <p class="data" data-i18n="e18.m">10 min · +30 Hack Points</p>
         </article>
         <article class="ex-card" data-world="future">
           <span class="ex-world"><span class="dot"></span><span data-i18n="w.future">Futuro</span></span>
@@ -639,8 +721,198 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
           <p class="ex-source"><span data-i18n="src">Fuente</span>Lally et al. (2010), <i>European Journal of Social Psychology</i></p>
           <p class="data" data-i18n="e10.m">10 min · +30 Hack Points</p>
         </article>
+        <article class="ex-card" data-world="future">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.future">Futuro</span></span>
+          <h3 class="heading" data-i18n="e19.t">Aprende en dosis espaciadas</h3>
+          <p class="desc" data-i18n="e19.d">Repartir el estudio en varios días le gana al atracón de una noche. Diseña tu calendario para aprender algo nuevo.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Cepeda et al. (2006), <i>Psychological Bulletin</i></p>
+          <p class="data" data-i18n="e19.m">10 min · +30 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="future">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.future">Futuro</span></span>
+          <h3 class="heading" data-i18n="e20.t">Ponte a prueba para recordar</h3>
+          <p class="desc" data-i18n="e20.d">Intentar recordar fija más que releer. Convierte tus apuntes en preguntas y respóndelas sin mirar.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Roediger &amp; Karpicke (2006), <i>Psychological Science</i></p>
+          <p class="data" data-i18n="e20.m">12 min · +35 Hack Points</p>
+        </article>
       </div>
-      <p class="data ex-count" id="exCount" aria-live="polite"></p>
+      <div class="ex-foot">
+        <p class="data ex-count" id="exCount" aria-live="polite"></p>
+        <button type="button" class="btn btn-secondary" id="exMore" hidden data-i18n="ex.more">Ver los 20 ejercicios</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECOMENDACIONES -->
+  <section class="section band-sunk" id="recomendaciones">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="eyebrow" data-i18n="rec.eyebrow">Recomendaciones</p>
+        <h2 class="display" data-i18n="rec.title">Para seguir explorando. <span class="soft">¿Qué escuchas mientras <em>piensas</em>?</span></h2>
+        <p class="body-lg" data-i18n="rec.lead">Podcasts, música para concentrarte y libros, elegidos con el mismo criterio que los ejercicios: curiosidad, rigor y cero promesas mágicas.</p>
+      </div>
+
+      <div class="recs" id="recs">
+        <div class="chips" role="tablist" aria-label="Tipo de recomendación" data-i18n-label="rec.tabs">
+          <button type="button" class="chip" role="tab" id="tab-pod" aria-controls="rec-pod" aria-selected="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>
+            <span data-i18n="rec.t.pod">Podcasts</span>
+          </button>
+          <button type="button" class="chip" role="tab" id="tab-music" aria-controls="rec-music" aria-selected="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3.5" y="14" width="4" height="6" rx="1.5"/><rect x="16.5" y="14" width="4" height="6" rx="1.5"/></svg>
+            <span data-i18n="rec.t.music">Música para focus</span>
+          </button>
+          <button type="button" class="chip" role="tab" id="tab-books" aria-controls="rec-books" aria-selected="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5C6.5 4.5 9.5 4.5 12 6c2.5-1.5 5.5-1.5 8-.5v13c-2.5-1-5.5-1-8 .5-2.5-1.5-5.5-1.5-8-.5z"/><path d="M12 6v13.5"/></svg>
+            <span data-i18n="rec.t.books">Libros</span>
+          </button>
+        </div>
+
+        <div class="rec-panel" id="rec-pod" role="tabpanel" aria-labelledby="tab-pod" tabindex="0">
+          <h3 class="heading rec-panel-title" data-i18n="rec.t.pod">Podcasts</h3>
+          <ul class="rec-grid">
+            <li class="rec-card" data-world="growth">
+              <p class="data">Podcast · ES</p>
+              <h4 class="rec-title">Entiende Tu Mente</h4>
+              <p class="rec-by">Molo Cebrián, Luis Muiño, Mónica González</p>
+              <p class="desc" data-i18n="r.p1">Psicología del día a día, explicada con humor y sin humo.</p>
+              <div class="rec-foot"><span class="ex-world"><span class="dot"></span><span data-i18n="w.growth">Crecimiento</span></span><a href="https://open.spotify.com/search/Entiende%20Tu%20Mente" target="_blank" rel="noopener"><span data-i18n="rec.listen">Escuchar</span> ↗</a></div>
+            </li>
+            <li class="rec-card" data-world="future">
+              <p class="data">Podcast · ES</p>
+              <h4 class="rec-title">Coffee Break: Señal y Ruido</h4>
+              <p class="rec-by">Héctor Socas</p>
+              <p class="desc" data-i18n="r.p2">Una tertulia de ciencia que no esconde las dudas. Buen antídoto contra los titulares rotundos.</p>
+              <div class="rec-foot"><span class="ex-world"><span class="dot"></span><span data-i18n="w.future">Futuro</span></span><a href="https://open.spotify.com/search/Coffee%20Break%20Se%C3%B1al%20y%20Ruido" target="_blank" rel="noopener"><span data-i18n="rec.listen">Escuchar</span> ↗</a></div>
+            </li>
+            <li class="rec-card" data-world="mind">
+              <p class="data">Podcast · EN</p>
+              <h4 class="rec-title">Hidden Brain</h4>
+              <p class="rec-by">Shankar Vedantam</p>
+              <p class="desc" data-i18n="r.p3">Los patrones inconscientes que hay detrás de lo que decidimos, contados como historias.</p>
+              <div class="rec-foot"><span class="ex-world"><span class="dot"></span><span data-i18n="w.mind">Mente</span></span><a href="https://open.spotify.com/search/Hidden%20Brain" target="_blank" rel="noopener"><span data-i18n="rec.listen">Escuchar</span> ↗</a></div>
+            </li>
+            <li class="rec-card" data-world="growth">
+              <p class="data">Podcast · EN</p>
+              <h4 class="rec-title">The Happiness Lab</h4>
+              <p class="rec-by">Laurie Santos</p>
+              <p class="desc" data-i18n="r.p4">Lo que la investigación sabe (y lo que no) sobre el bienestar, de una profesora de Yale.</p>
+              <div class="rec-foot"><span class="ex-world"><span class="dot"></span><span data-i18n="w.growth">Crecimiento</span></span><a href="https://open.spotify.com/search/The%20Happiness%20Lab" target="_blank" rel="noopener"><span data-i18n="rec.listen">Escuchar</span> ↗</a></div>
+            </li>
+            <li class="rec-card" data-world="leadership">
+              <p class="data">Podcast · EN</p>
+              <h4 class="rec-title">WorkLife with Adam Grant</h4>
+              <p class="rec-by">Adam Grant · TED</p>
+              <p class="desc" data-i18n="r.p5">Psicología organizacional aplicada: equipos, feedback y cómo hacer que el trabajo valga la pena.</p>
+              <div class="rec-foot"><span class="ex-world"><span class="dot"></span><span data-i18n="w.leadership">Liderazgo</span></span><a href="https://open.spotify.com/search/WorkLife%20with%20Adam%20Grant" target="_blank" rel="noopener"><span data-i18n="rec.listen">Escuchar</span> ↗</a></div>
+            </li>
+            <li class="rec-card" data-world="business">
+              <p class="data">Podcast · EN</p>
+              <h4 class="rec-title">The Knowledge Project</h4>
+              <p class="rec-by">Shane Parrish · Farnam Street</p>
+              <p class="desc" data-i18n="r.p6">Conversaciones largas sobre modelos mentales y decisiones con gente que las toma a diario.</p>
+              <div class="rec-foot"><span class="ex-world"><span class="dot"></span><span data-i18n="w.business">Negocio</span></span><a href="https://open.spotify.com/search/The%20Knowledge%20Project" target="_blank" rel="noopener"><span data-i18n="rec.listen">Escuchar</span> ↗</a></div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="rec-panel" id="rec-music" role="tabpanel" aria-labelledby="tab-music" tabindex="0">
+          <h3 class="heading rec-panel-title" data-i18n="rec.t.music">Música para focus</h3>
+          <p class="rec-note"><span class="rec-note-label" data-i18n="rec.note.label">Lo que dice la evidencia</span><span data-i18n="rec.note">Es mixta, y depende de la persona y de la tarea. Lo más sólido: el habla de fondo interfiere con la memoria de trabajo (Salamé &amp; Baddeley, 1982), así que para leer o escribir conviene la música sin letra. Prueba, compara y quédate con lo que te funcione.</span></p>
+          <ul class="rec-grid">
+            <li class="rec-card" data-world="mind">
+              <p class="data" data-i18n="r.m1.k">Álbum · 1978</p>
+              <h4 class="rec-title">Ambient 1: Music for Airports</h4>
+              <p class="rec-by">Brian Eno</p>
+              <p class="desc" data-i18n="r.m1">El disco que le dio nombre a la música ambient. Está hecho para estar ahí sin pedir atención.</p>
+              <div class="rec-foot"><span class="data" data-i18n="rec.nolyrics">Sin letra</span><a href="https://open.spotify.com/search/Brian%20Eno%20Music%20for%20Airports" target="_blank" rel="noopener"><span data-i18n="rec.listen">Escuchar</span> ↗</a></div>
+            </li>
+            <li class="rec-card" data-world="mind">
+              <p class="data" data-i18n="r.m2.k">Álbum · 2015</p>
+              <h4 class="rec-title">Sleep</h4>
+              <p class="rec-by">Max Richter</p>
+              <p class="desc" data-i18n="r.m2">Más de ocho horas de piano, cuerdas y electrónica lenta. Ideal para bloques largos de trabajo profundo.</p>
+              <div class="rec-foot"><span class="data" data-i18n="rec.nolyrics">Sin letra</span><a href="https://open.spotify.com/search/Max%20Richter%20Sleep" target="_blank" rel="noopener"><span data-i18n="rec.listen">Escuchar</span> ↗</a></div>
+            </li>
+            <li class="rec-card" data-world="mind">
+              <p class="data" data-i18n="r.m3.k">Álbum · 1981</p>
+              <h4 class="rec-title" data-i18n="r.m3.t">Variaciones Goldberg</h4>
+              <p class="rec-by">J. S. Bach · Glenn Gould</p>
+              <p class="desc" data-i18n="r.m3">Estructura, repetición y variación. Mucha gente la usa para estudiar, escribir o programar.</p>
+              <div class="rec-foot"><span class="data" data-i18n="rec.nolyrics">Sin letra</span><a href="https://open.spotify.com/search/Glenn%20Gould%20Goldberg%20Variations%201981" target="_blank" rel="noopener"><span data-i18n="rec.listen">Escuchar</span> ↗</a></div>
+            </li>
+            <li class="rec-card" data-world="mind">
+              <p class="data" data-i18n="r.m4.k">Álbum · 2018</p>
+              <h4 class="rec-title">All Melody</h4>
+              <p class="rec-by">Nils Frahm</p>
+              <p class="desc" data-i18n="r.m4">Piano y sintetizadores que avanzan sin prisa. Suena a concentración tranquila.</p>
+              <div class="rec-foot"><span class="data" data-i18n="rec.nolyrics">Sin letra</span><a href="https://open.spotify.com/search/Nils%20Frahm%20All%20Melody" target="_blank" rel="noopener"><span data-i18n="rec.listen">Escuchar</span> ↗</a></div>
+            </li>
+            <li class="rec-card" data-world="mind">
+              <p class="data" data-i18n="r.m5.k">Radio en vivo · YouTube</p>
+              <h4 class="rec-title">lofi hip hop radio</h4>
+              <p class="rec-by">Lofi Girl</p>
+              <p class="desc" data-i18n="r.m5">El clásico de las sesiones de estudio, encendido las 24 horas. Ritmo suave y casi siempre sin voces.</p>
+              <div class="rec-foot"><span class="data" data-i18n="rec.nolyrics">Sin letra</span><a href="https://www.youtube.com/@LofiGirl" target="_blank" rel="noopener"><span data-i18n="rec.watch">Abrir</span> ↗</a></div>
+            </li>
+            <li class="rec-card" data-world="mind">
+              <p class="data" data-i18n="r.m6.k">Sonido</p>
+              <h4 class="rec-title" data-i18n="r.m6.t">Ruido marrón</h4>
+              <p class="rec-by" data-i18n="r.m6.by">Varios autores</p>
+              <p class="desc" data-i18n="r.m6">Más grave que el ruido blanco. Sirve para tapar conversaciones en una oficina o un café.</p>
+              <div class="rec-foot"><span class="data" data-i18n="rec.nolyrics">Sin letra</span><a href="https://open.spotify.com/search/brown%20noise" target="_blank" rel="noopener"><span data-i18n="rec.listen">Escuchar</span> ↗</a></div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="rec-panel" id="rec-books" role="tabpanel" aria-labelledby="tab-books" tabindex="0">
+          <h3 class="heading rec-panel-title" data-i18n="rec.t.books">Libros</h3>
+          <ul class="rec-grid">
+            <li class="rec-card" data-world="mind">
+              <p class="data" data-i18n="r.b1.k">Libro · 2011</p>
+              <h4 class="rec-title" data-i18n="r.b1.t">Pensar rápido, pensar despacio</h4>
+              <p class="rec-by">Daniel Kahneman</p>
+              <p class="desc" data-i18n="r.b1">Los dos sistemas con los que pensamos y los sesgos que salen de ahí. Algunos estudios que cita no se han replicado; vale la pena leerlo sabiéndolo.</p>
+              <div class="rec-foot"><span class="ex-world"><span class="dot"></span><span data-i18n="w.mind">Mente</span></span></div>
+            </li>
+            <li class="rec-card" data-world="mind">
+              <p class="data" data-i18n="r.b2.k">Libro · 2016</p>
+              <h4 class="rec-title" data-i18n="r.b2.t">Céntrate (Deep Work)</h4>
+              <p class="rec-by">Cal Newport</p>
+              <p class="desc" data-i18n="r.b2">Por qué el trabajo sin distracciones es cada vez más raro y más valioso, y cómo recuperarlo.</p>
+              <div class="rec-foot"><span class="ex-world"><span class="dot"></span><span data-i18n="w.mind">Mente</span></span></div>
+            </li>
+            <li class="rec-card" data-world="growth">
+              <p class="data" data-i18n="r.b3.k">Libro · 2006</p>
+              <h4 class="rec-title" data-i18n="r.b3.t">Mindset: La actitud del éxito</h4>
+              <p class="rec-by">Carol Dweck</p>
+              <p class="desc" data-i18n="r.b3">La idea de que las habilidades se desarrollan. Útil como marco; los efectos de las intervenciones en escuelas resultaron más pequeños de lo prometido.</p>
+              <div class="rec-foot"><span class="ex-world"><span class="dot"></span><span data-i18n="w.growth">Crecimiento</span></span></div>
+            </li>
+            <li class="rec-card" data-world="leadership">
+              <p class="data" data-i18n="r.b4.k">Libro · 2018</p>
+              <h4 class="rec-title">The Fearless Organization</h4>
+              <p class="rec-by">Amy Edmondson</p>
+              <p class="desc" data-i18n="r.b4">La seguridad psicológica explicada por quien la investigó: qué es, qué no es y cómo construirla en un equipo.</p>
+              <div class="rec-foot"><span class="ex-world"><span class="dot"></span><span data-i18n="w.leadership">Liderazgo</span></span></div>
+            </li>
+            <li class="rec-card" data-world="business">
+              <p class="data" data-i18n="r.b5.k">Libro · 2018</p>
+              <h4 class="rec-title">Thinking in Bets</h4>
+              <p class="rec-by">Annie Duke</p>
+              <p class="desc" data-i18n="r.b5">Una exjugadora de póker sobre separar la calidad de una decisión de la suerte del resultado.</p>
+              <div class="rec-foot"><span class="ex-world"><span class="dot"></span><span data-i18n="w.business">Negocio</span></span></div>
+            </li>
+            <li class="rec-card" data-world="future">
+              <p class="data" data-i18n="r.b6.k">Libro · 2019</p>
+              <h4 class="rec-title">Range</h4>
+              <p class="rec-by">David Epstein</p>
+              <p class="desc" data-i18n="r.b6">Por qué los generalistas se adaptan mejor cuando las reglas cambian. Buen contrapeso a "especialízate pronto".</p>
+              <div class="rec-foot"><span class="ex-world"><span class="dot"></span><span data-i18n="w.future">Futuro</span></span></div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -698,6 +970,7 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
           <li><a href="#diagnostico" data-i18n="nav.quiz">Diagnóstico</a></li>
           <li><a href="#mundos" data-i18n="nav.worlds">Mundos</a></li>
           <li><a href="#ejercicios" data-i18n="nav.exercises">Ejercicios</a></li>
+          <li><a href="#recomendaciones" data-i18n="nav.recs">Recomendaciones</a></li>
           <li><a href="#hack-points">Hack Points</a></li>
         </ul>
       </nav>
@@ -773,11 +1046,11 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
     "worlds.eyebrow": "The five worlds",
     "worlds.title": 'Five worlds to grow. <span class="soft">Where do you <em>begin</em>?</span>',
     "worlds.lead": "Each world is a question worth asking. The exercises are a way to answer it, slowly.",
-    "w.mind": "Mind", "w.mind.q": "What do you think you know?", "w.mind.d": "Biases, decisions and attention: how your mind works, so you can use it better.", "w.mind.m": "2 exercises · 25 min",
-    "w.growth": "Growth", "w.growth.q": "Why do you react the way you do?", "w.growth.d": "Emotions, habits and values. Understanding yourself without judging yourself.", "w.growth.m": "2 exercises · 20 min",
-    "w.leadership": "Leadership", "w.leadership.q": "What happens in a room when you speak?", "w.leadership.d": "Human skills: listening, giving feedback and holding difficult conversations.", "w.leadership.m": "2 exercises · 27 min",
-    "w.business": "Business", "w.business.q": "What problem do you really solve?", "w.business.d": "Thinking like a builder: value, risk and decisions with incomplete information.", "w.business.m": "2 exercises · 22 min",
-    "w.future": "Future", "w.future.q": "What will you do when the rules change?", "w.future.d": "Navigating change, AI and uncertainty with judgment, not fear.", "w.future.m": "2 exercises · 25 min",
+    "w.mind": "Mind", "w.mind.q": "What do you think you know?", "w.mind.d": "Biases, decisions and attention: how your mind works, so you can use it better.", "w.mind.m": "4 exercises · 47 min",
+    "w.growth": "Growth", "w.growth.q": "Why do you react the way you do?", "w.growth.d": "Emotions, habits and values. Understanding yourself without judging yourself.", "w.growth.m": "4 exercises · 41 min",
+    "w.leadership": "Leadership", "w.leadership.q": "What happens in a room when you speak?", "w.leadership.d": "Human skills: listening, giving feedback and holding difficult conversations.", "w.leadership.m": "4 exercises · 45 min",
+    "w.business": "Business", "w.business.q": "What problem do you really solve?", "w.business.d": "Thinking like a builder: value, risk and decisions with incomplete information.", "w.business.m": "4 exercises · 44 min",
+    "w.future": "Future", "w.future.q": "What will you do when the rules change?", "w.future.d": "Navigating change, AI and uncertainty with judgment, not fear.", "w.future.m": "4 exercises · 47 min",
     "game.eyebrow": "Ethical gamification",
     "game.title": 'Points reward depth. <span class="soft">Why <em>rush</em>?</span>',
     "game.p1": "Points for thinking, not clicking", "game.p1.d": "An exercise earns more Hack Points when you write your reflection, not when you finish fast.",
@@ -799,6 +1072,42 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
     "e8.t": "What drives your team (it's not the bonus)", "e8.d": "Autonomy, competence and relatedness: check which one your project is missing.", "e8.m": "12 min · +35 Hack Points",
     "e9.t": "Calibrate your predictions", "e9.d": "Put percentages on what you think will happen and review them later. That's how judgment is trained.", "e9.m": "15 min · +40 Hack Points",
     "e10.t": "A habit in 66 days (or more)", "e10.d": "\"21 days\" is a myth. The median was 66, with wide variation. Design a new one knowing that.", "e10.m": "10 min · +30 Hack Points",
+    "e11.t": "Consider the opposite", "e11.d": "Before settling on an opinion, write three reasons you might be wrong. It works better than \"trying to be objective\".", "e11.m": "10 min · +30 Hack Points",
+    "e12.t": "One thing at a time", "e12.d": "Switching tasks costs time even when you don't notice. Measure your own cost with two timed rounds.", "e12.m": "12 min · +35 Hack Points",
+    "e13.t": "Write down what weighs on you", "e13.d": "Fifteen minutes writing about what worries you, four days in a row. No editing, and no showing anyone.", "e13.m": "15 min · +40 Hack Points",
+    "e14.t": "Name the emotion", "e14.d": "Saying \"this is frustration\" turns the emotion's volume down. Practice naming it precisely.", "e14.m": "6 min · +20 Hack Points",
+    "e15.t": "Ask, then ask again", "e15.d": "People who ask follow-up questions are better liked. Test it in your next conversation.", "e15.m": "10 min · +30 Hack Points",
+    "e16.t": "A thank-you that lands", "e16.d": "Specific gratitude makes people more willing to help later. Write three specific thank-yous.", "e16.m": "8 min · +25 Hack Points",
+    "e17.t": "Estimate from the outside view", "e17.d": "We underestimate how long things take, even when it has happened before. Use your past projects as the reference.", "e17.m": "12 min · +35 Hack Points",
+    "e18.t": "Let go of what you already paid", "e18.d": "What you invested won't come back. Review a project you keep going only because you've put time or money into it.", "e18.m": "10 min · +30 Hack Points",
+    "e19.t": "Learn in spaced doses", "e19.d": "Spreading study over several days beats a one-night cram. Design your schedule to learn something new.", "e19.m": "10 min · +30 Hack Points",
+    "e20.t": "Test yourself to remember", "e20.d": "Trying to recall locks things in better than rereading. Turn your notes into questions and answer them without looking.", "e20.m": "12 min · +35 Hack Points",
+    "ex.more": "See all 20 exercises", "nav.recs": "Recommendations",
+    "rec.eyebrow": "Recommendations",
+    "rec.title": 'To keep exploring. <span class="soft">What do you listen to while you <em>think</em>?</span>',
+    "rec.lead": "Podcasts, music to focus and books, chosen with the same criteria as the exercises: curiosity, rigor and zero magic promises.",
+    "rec.tabs": "Recommendation type", "rec.t.pod": "Podcasts", "rec.t.music": "Focus music", "rec.t.books": "Books",
+    "rec.listen": "Listen", "rec.watch": "Open", "rec.nolyrics": "No lyrics",
+    "r.p1": "Everyday psychology, explained with humor and no hype.",
+    "r.p2": "A science roundtable that doesn't hide its doubts. A good antidote to sweeping headlines.",
+    "r.p3": "The unconscious patterns behind what we decide, told as stories.",
+    "r.p4": "What research knows (and doesn't) about well-being, from a Yale professor.",
+    "r.p5": "Applied organizational psychology: teams, feedback and making work worth it.",
+    "r.p6": "Long conversations about mental models and decisions with people who make them every day.",
+    "rec.note.label": "What the evidence says",
+    "rec.note": "It's mixed, and it depends on the person and the task. The most solid finding: background speech interferes with working memory (Salamé &amp; Baddeley, 1982), so for reading or writing, music without lyrics is the safer bet. Try, compare, and keep what works for you.",
+    "r.m1.k": "Album · 1978", "r.m1": "The record that gave ambient music its name. It's made to be there without asking for attention.",
+    "r.m2.k": "Album · 2015", "r.m2": "Over eight hours of piano, strings and slow electronics. Ideal for long blocks of deep work.",
+    "r.m3.k": "Album · 1981", "r.m3.t": "Goldberg Variations", "r.m3": "Structure, repetition and variation. Many people use it to study, write or code.",
+    "r.m4.k": "Album · 2018", "r.m4": "Piano and synths that move forward unhurried. It sounds like calm focus.",
+    "r.m5.k": "Live radio · YouTube", "r.m5": "The study-session classic, on 24 hours a day. A soft beat and almost never any vocals.",
+    "r.m6.k": "Sound", "r.m6.t": "Brown noise", "r.m6.by": "Various artists", "r.m6": "Deeper than white noise. Good for masking conversations in an office or a café.",
+    "r.b1.k": "Book · 2011", "r.b1.t": "Thinking, Fast and Slow", "r.b1": "The two systems we think with and the biases they produce. Some studies it cites haven't replicated; worth reading with that in mind.",
+    "r.b2.k": "Book · 2016", "r.b2.t": "Deep Work", "r.b2": "Why distraction-free work is increasingly rare and valuable, and how to get it back.",
+    "r.b3.k": "Book · 2006", "r.b3.t": "Mindset", "r.b3": "The idea that abilities can be developed. Useful as a frame; school interventions turned out to have smaller effects than promised.",
+    "r.b4.k": "Book · 2018", "r.b4": "Psychological safety explained by the person who researched it: what it is, what it isn't and how to build it in a team.",
+    "r.b5.k": "Book · 2018", "r.b5": "A former poker player on separating the quality of a decision from the luck of the outcome.",
+    "r.b6.k": "Book · 2019", "r.b6": "Why generalists adapt better when the rules change. A good counterweight to \"specialize early\".",
     "priv.eyebrow": "Privacy by design",
     "priv.title": 'Your data is yours. <span class="soft">Whose else would it <em>be</em>?</span>',
     "priv.lead": "We never sell your data or use your results for advertising.",
@@ -812,10 +1121,10 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
     "foot.sources": "Sources", "foot.follow": "Follow us"
   };
   var DYN = {
-    es: { title: "Hack Your Mind", first: "Primer ejercicio: ", shown: "{n} de 10 ejercicios", count: "{i} / 3",
+    es: { title: "Hack Your Mind", first: "Primer ejercicio: ", shown: "{n} de 20 ejercicios", count: "{i} / 3",
           exported: "Listo: descargaste tus datos.", deleted: "Listo: borramos todo lo guardado en este dispositivo.", empty: "No hay nada guardado todavía.",
           confirm: "¿Borrar tu resultado y tus preferencias de este dispositivo?" },
-    en: { title: "Hack Your Mind", first: "First exercise: ", shown: "{n} of 10 exercises", count: "{i} / 3",
+    en: { title: "Hack Your Mind", first: "First exercise: ", shown: "{n} of 20 exercises", count: "{i} / 3",
           exported: "Done: your data was downloaded.", deleted: "Done: everything stored on this device was deleted.", empty: "Nothing is stored yet.",
           confirm: "Delete your result and preferences from this device?" }
   };
@@ -886,14 +1195,51 @@ section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space
   window.addEventListener("beforeprint", function () { reveals.forEach(function (el) { el.classList.add("is-in"); }); });
 
   /* ---------- Filtro de ejercicios ---------- */
-  var chips = $$(".chip"), cards = $$("#exList .ex-card"), exCount = $("#exCount");
-  var currentFilter = "all";
+  var chips = $$(".chip[data-filter]"), cards = $$("#exList .ex-card"), exCount = $("#exCount"), exMore = $("#exMore");
+  // En "Todos" se ve una muestra (uno por mundo y uno extra) hasta pedir la lista completa.
+  var FEATURED = ["e1", "e3", "e5", "e7", "e9", "e14"];
+  var currentFilter = "all", expanded = false;
   function applyFilter(f) {
     currentFilter = f;
     chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c.dataset.filter === f)); });
-    cards.forEach(function (c) { c.hidden = f !== "all" && c.dataset.world !== f; });
+    cards.forEach(function (c) {
+      var key = $("h3", c).dataset.i18n.split(".")[0];
+      c.hidden = f === "all" ? !(expanded || FEATURED.indexOf(key) > -1) : c.dataset.world !== f;
+    });
+    exMore.hidden = f !== "all" || expanded;
     updateCount();
   }
+  exMore.addEventListener("click", function () {
+    var firstHidden = cards.filter(function (c) { return c.hidden; })[0];
+    expanded = true;
+    applyFilter(currentFilter);
+    if (firstHidden) { firstHidden.setAttribute("tabindex", "-1"); firstHidden.focus({ preventScroll: false }); }
+  });
+
+  /* ---------- Recomendaciones: pestañas ---------- */
+  var recs = $("#recs"), recTabs = $$('[role="tab"]', recs);
+  recs.classList.add("is-live");
+  function selectTab(tab, focus) {
+    recTabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on ? 0 : -1;
+      $("#" + t.getAttribute("aria-controls")).hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
+  recTabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { selectTab(t); });
+    t.addEventListener("keydown", function (e) {
+      var n = recTabs.length, next = null;
+      if (e.key === "ArrowRight") next = recTabs[(i + 1) % n];
+      else if (e.key === "ArrowLeft") next = recTabs[(i - 1 + n) % n];
+      else if (e.key === "Home") next = recTabs[0];
+      else if (e.key === "End") next = recTabs[n - 1];
+      if (next) { e.preventDefault(); selectTab(next, true); }
+    });
+  });
+  selectTab(recTabs[0]);
   function updateCount() {
     var n = cards.filter(function (c) { return !c.hidden; }).length;
     exCount.textContent = t("shown").replace("{n}", n);
