@@ -1,0 +1,1111 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hack Your Mind</title>
+<meta name="description" content="Una plataforma interactiva de desarrollo humano. Explora cómo piensas y navega el cambio con más claridad. Con rigor, sin gurús y sin vender tus datos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* ---------- Tokens (tokens.json) ---------- */
+:root {
+  --paper: #F4F3EF; --paper-raised: #FFFFFF; --paper-sunk: #EAE8E2; --line: #DEDBD3;
+  --ink: #0B0B0B; --ink-muted: #5C5C61; --ink-soft: #6E6E73;
+  --inverse: #0B0B0B; --on-inverse: #F4F3EF; --on-inverse-muted: #8A8A8F;
+  --chispa: #FF4D1F; --chispa-ink: #C2340C; --on-chispa: #0B0B0B;
+  --world-mind: #5B4BD6; --world-growth: #1F8A52; --world-leadership: #B07A00;
+  --world-business: #C93A6B; --world-future: #0E8BA0;
+  --link: var(--chispa-ink);
+  --shadow-lift: 0 1px 2px #0B0B0B0D, 0 8px 24px -8px #0B0B0B26;
+  --focus-ring: 0 0 0 2px #F4F3EF, 0 0 0 4px #FF4D1F;
+
+  --sans: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-6: 24px;
+  --space-8: 32px; --space-12: 48px; --space-24: 96px;
+  --radius-sm: 8px; --radius-md: 16px; --radius-lg: 24px; --radius-pill: 9999px;
+
+  --header-h: 64px;
+  --gutter: var(--space-6);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E0E0D; --paper-raised: #1A1A19; --paper-sunk: #151514; --line: #2C2B29;
+    --ink: #F4F3EF; --ink-muted: #A3A29C; --ink-soft: #8E8D87;
+    --inverse: #F4F3EF; --on-inverse: #0B0B0B; --on-inverse-muted: #5C5C61;
+    --chispa: #FF6A3D; --chispa-ink: #FF8A66;
+    --world-mind: #9D92FF; --world-growth: #4CC985; --world-leadership: #F2B730;
+    --world-business: #F07BA3; --world-future: #3CC4DA;
+    --shadow-lift: 0 8px 24px -8px #000000CC;
+    --focus-ring: 0 0 0 2px #0E0E0D, 0 0 0 4px #FF6A3D;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E0E0D; --paper-raised: #1A1A19; --paper-sunk: #151514; --line: #2C2B29;
+  --ink: #F4F3EF; --ink-muted: #A3A29C; --ink-soft: #8E8D87;
+  --inverse: #F4F3EF; --on-inverse: #0B0B0B; --on-inverse-muted: #5C5C61;
+  --chispa: #FF6A3D; --chispa-ink: #FF8A66;
+  --world-mind: #9D92FF; --world-growth: #4CC985; --world-leadership: #F2B730;
+  --world-business: #F07BA3; --world-future: #3CC4DA;
+  --shadow-lift: 0 8px 24px -8px #000000CC;
+  --focus-ring: 0 0 0 2px #0E0E0D, 0 0 0 4px #FF6A3D;
+  color-scheme: dark;
+}
+@media (min-width: 900px) { :root { --gutter: var(--space-12); } }
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 400 16px/26px var(--sans);
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+img, svg, canvas { display: block; }
+a { color: var(--link); text-underline-offset: 3px; }
+button { font: inherit; color: inherit; }
+:focus { outline: none; }
+:focus-visible { box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+.btn:focus-visible, .chip:focus-visible, .lang button:focus-visible { border-radius: var(--radius-pill); }
+.skip { position: absolute; left: var(--gutter); top: -60px; z-index: 100; background: var(--inverse); color: var(--on-inverse); padding: 10px 16px; border-radius: var(--radius-pill); text-decoration: none; font-weight: 600; }
+.skip:focus { top: 12px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Problema crítico 2: las anclas no quedan bajo el header fijo */
+section[id], [id].anchor { scroll-margin-top: calc(var(--header-h) + var(--space-4)); }
+
+.wrap { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 var(--gutter); }
+.section { padding: var(--space-24) 0; }
+.band-sunk { background: var(--paper-sunk); }
+.band-inverse { background: var(--inverse); color: var(--on-inverse); }
+
+/* ---------- Tipografía: tres voces ---------- */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font: 500 12px/16px var(--mono); letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-muted); margin: 0 0 var(--space-6);
+}
+.eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--chispa); flex: none; }
+.band-inverse .eyebrow { color: var(--on-inverse-muted); }
+
+.display-xl {
+  font: 700 clamp(44px, 7.4vw, 72px)/0.945 var(--sans); letter-spacing: -0.035em;
+  margin: 0 0 var(--space-6); max-width: 20ch; text-wrap: balance;
+}
+.display {
+  font: 700 clamp(34px, 5vw, 48px)/1 var(--sans); letter-spacing: -0.03em;
+  margin: 0 0 var(--space-6); max-width: 26ch; text-wrap: balance;
+}
+.soft { color: var(--ink-soft); }
+.display-xl .soft, .display .soft { display: block; }
+.band-inverse .soft { color: var(--on-inverse-muted); }
+/* El gesto de marca: una palabra en serif cursiva dentro del titular grotesco */
+.display-xl em, .display em {
+  font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em;
+  font-size: 1.08em;
+}
+.heading { font: 600 24px/30px var(--sans); letter-spacing: -0.015em; margin: 0; }
+.body-lg { font-size: 19px; line-height: 30px; color: var(--ink-muted); max-width: 58ch; margin: 0 0 var(--space-8); }
+.band-inverse .body-lg { color: var(--on-inverse-muted); }
+.reflect { font: italic 400 clamp(30px, 4.2vw, 40px)/1.1 var(--serif); letter-spacing: -0.01em; margin: 0; }
+.quote { font: italic 400 22px/32px var(--serif); margin: 0; }
+.data { font: 500 14px/20px var(--mono); color: var(--ink-muted); }
+.muted { color: var(--ink-muted); }
+
+/* ---------- Botones ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 52px; padding: 0 28px; border-radius: var(--radius-pill);
+  font: 600 16px/20px var(--sans); text-decoration: none; cursor: pointer;
+  border: 1.5px solid transparent; transition: transform .2s ease-out, background-color .2s;
+}
+.btn-primary { background: var(--inverse); color: var(--on-inverse); }
+.btn-primary .arrow { color: var(--chispa); transition: transform .25s ease-out; }
+.btn-primary:hover .arrow { transform: translateX(4px); }
+.band-inverse .btn-primary { background: var(--on-inverse); color: var(--inverse); }
+.btn-secondary { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn-secondary:hover { background: var(--paper-raised); }
+.band-inverse .btn-secondary { color: var(--on-inverse); border-color: var(--on-inverse-muted); }
+.band-inverse .btn-secondary:hover { background: transparent; border-color: var(--on-inverse); }
+.link-btn { background: none; border: 0; padding: 0; color: var(--link); font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-6); }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 50; height: var(--header-h);
+  background: var(--paper); border-bottom: 1px solid var(--line);
+}
+.site-header .wrap { height: 100%; display: flex; align-items: center; gap: var(--space-6); }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font: 700 15px/1 var(--sans); letter-spacing: 0.02em; white-space: nowrap; }
+.brand svg { width: 16px; height: 22px; }
+.brand .logo-dot { fill: var(--chispa); }
+.nav { display: none; gap: var(--space-6); margin-left: auto; }
+.nav a { color: var(--ink-muted); text-decoration: none; font-weight: 500; font-size: 15px; }
+.nav a:hover { color: var(--ink); }
+.header-tools { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
+.lang { display: inline-flex; padding: 3px; border: 1px solid var(--line); border-radius: var(--radius-pill); background: var(--paper-raised); }
+.lang button { border: 0; background: none; padding: 5px 10px; border-radius: var(--radius-pill); font: 500 12px/16px var(--mono); letter-spacing: .08em; color: var(--ink-muted); cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--inverse); color: var(--on-inverse); }
+.icon-btn { width: 40px; height: 40px; display: inline-grid; place-items: center; border: 1px solid var(--line); background: var(--paper-raised); border-radius: var(--radius-sm); cursor: pointer; color: var(--ink); }
+.icon-btn svg { width: 18px; height: 18px; }
+.menu-btn .bar { transition: transform .2s ease-out, opacity .2s; transform-origin: center; }
+.menu-btn[aria-expanded="true"] .b1 { transform: translateY(4px) rotate(45deg); }
+.menu-btn[aria-expanded="true"] .b2 { opacity: 0; }
+.menu-btn[aria-expanded="true"] .b3 { transform: translateY(-4px) rotate(-45deg); }
+.mobile-nav {
+  position: absolute; left: 0; right: 0; top: var(--header-h);
+  background: var(--paper); border-bottom: 1px solid var(--line); padding: var(--space-4) var(--gutter) var(--space-6);
+}
+.mobile-nav a { display: block; padding: 14px 0; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; font: 600 20px/1.2 var(--sans); letter-spacing: -0.015em; }
+.mobile-nav a:last-child { border-bottom: 0; }
+@media (max-width: 420px) {
+  .site-header .wrap { gap: var(--space-3); }
+  .brand { font-size: 13px; gap: 8px; }
+  .header-tools { gap: 6px; }
+  .icon-btn { width: 36px; height: 36px; }
+  .lang button { padding: 5px 8px; }
+}
+@media (min-width: 900px) {
+  .nav { display: flex; }
+  .header-tools { margin-left: var(--space-6); }
+  .menu-btn, .mobile-nav { display: none !important; }
+}
+
+/* ---------- Hero + constelación ---------- */
+.hero { position: relative; min-height: calc(100svh - var(--header-h)); display: flex; align-items: center; overflow: hidden; padding: var(--space-12) 0 260px; }
+@media (min-width: 1100px) { .hero { padding: var(--space-24) 0; } }
+.hero canvas { position: absolute; inset: 0; z-index: 0; }
+.hero .wrap { position: relative; z-index: 1; pointer-events: none; }
+.hero .wrap a, .hero .wrap button { pointer-events: auto; }
+.hero-proof {
+  display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); margin: var(--space-8) 0 0; padding: 0; list-style: none;
+}
+.hero-proof li { display: inline-flex; align-items: center; gap: var(--space-2); }
+.hero-proof svg { width: 16px; height: 16px; color: var(--ink); flex: none; }
+
+/* ---------- Diagnóstico ---------- */
+.quiz-grid { display: grid; gap: var(--space-8); }
+@media (min-width: 900px) { .quiz-grid { grid-template-columns: 5fr 7fr; gap: var(--space-12); align-items: start; } }
+.quiz {
+  background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: var(--space-6);
+}
+@media (min-width: 600px) { .quiz { padding: var(--space-8); } }
+.q-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-6); }
+.q-progress { flex: 1; max-width: 220px; height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
+.q-progress span { display: block; height: 100%; width: 33.33%; background: var(--chispa); border-radius: 2px; transition: width .6s ease-out; }
+.q-step { border: 0; margin: 0 0 var(--space-8); padding: 0; min-width: 0; }
+.q-step:last-of-type { margin-bottom: 0; }
+.q-step legend { padding: 0; margin-bottom: var(--space-6); }
+.q-step .data { display: block; margin-bottom: var(--space-2); }
+.q-options { display: grid; gap: var(--space-2); }
+.q-opt { position: relative; display: flex; align-items: center; gap: var(--space-3); padding: 14px 18px; border: 1px solid var(--line); border-radius: var(--radius-md); cursor: pointer; transition: border-color .15s, background-color .15s; }
+.q-opt:hover { border-color: var(--ink-soft); }
+.q-opt input { position: absolute; opacity: 0; pointer-events: none; }
+.q-opt .tick { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--ink-soft); flex: none; display: grid; place-items: center; }
+.q-opt input:checked + .tick { border-color: var(--ink); }
+.q-opt input:checked + .tick::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--chispa); }
+.q-opt:has(input:checked) { border-color: var(--ink); background: var(--paper); }
+.q-opt:has(input:focus-visible) { box-shadow: var(--focus-ring); }
+.q-nav { display: none; margin-top: var(--space-6); }
+.quiz.is-live .q-step { display: none; }
+.quiz.is-live .q-step.is-current { display: block; }
+.quiz.is-live .q-nav { display: flex; }
+.quiz.is-live .q-step.is-current { animation: fadeUp .5s ease-out; }
+.q-result[hidden] { display: none; }
+.q-result .q-world { display: flex; align-items: center; gap: var(--space-3); font: 700 clamp(34px, 5vw, 48px)/1 var(--sans); letter-spacing: -0.03em; margin: 0 0 var(--space-4); }
+.q-result .q-world .dot { width: 14px; height: 14px; }
+.q-result .reflect { margin-bottom: var(--space-6); font-size: clamp(26px, 3.4vw, 32px); }
+.q-result .first { margin: 0 0 var(--space-2); }
+.q-result .data { margin: 0 0 var(--space-8); }
+.quiz.is-done .q-top, .quiz.is-done .q-step, .quiz.is-done .q-nav { display: none !important; }
+.quiz-aside ul { list-style: none; margin: var(--space-8) 0 0; padding: 0; display: grid; gap: var(--space-3); }
+.quiz-aside li { display: flex; gap: var(--space-3); align-items: baseline; color: var(--ink-muted); }
+.quiz-aside li .data { color: var(--ink); flex: none; }
+
+/* ---------- Mundos ---------- */
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--w, var(--ink)); flex: none; }
+[data-world="mind"] { --w: var(--world-mind); }
+[data-world="growth"] { --w: var(--world-growth); }
+[data-world="leadership"] { --w: var(--world-leadership); }
+[data-world="business"] { --w: var(--world-business); }
+[data-world="future"] { --w: var(--world-future); }
+
+.worlds { display: grid; gap: var(--space-4); margin-top: var(--space-12); }
+@media (min-width: 700px) { .worlds { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .worlds { grid-template-columns: repeat(6, 1fr); } .worlds > :nth-child(-n+3) { grid-column: span 2; } .worlds > :nth-child(n+4) { grid-column: span 3; } }
+.world-card {
+  display: flex; flex-direction: column; gap: var(--space-4);
+  padding: var(--space-6); border-radius: var(--radius-lg);
+  background: var(--paper-raised); border: 1px solid var(--line);
+  color: inherit; text-decoration: none; transition: box-shadow .25s ease-out, transform .25s ease-out;
+}
+.world-card:hover { box-shadow: var(--shadow-lift); transform: translateY(-2px); }
+.world-card:focus-visible { border-radius: var(--radius-lg); }
+.world-num { display: inline-flex; align-items: center; gap: var(--space-2); font: 500 14px/20px var(--mono); color: var(--ink-muted); }
+.world-card .quote { color: var(--ink); }
+.world-card p.desc { margin: 0; color: var(--ink-muted); flex: 1; }
+.world-meta { display: flex; justify-content: space-between; gap: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--line); }
+.world-meta .go { color: var(--ink); }
+
+/* ---------- Gamificación ---------- */
+.principles { display: grid; gap: var(--space-8); margin-top: var(--space-12); padding: 0; list-style: none; }
+@media (min-width: 800px) { .principles { grid-template-columns: repeat(3, 1fr); } }
+.principles li { border-top: 1px solid var(--on-inverse-muted); padding-top: var(--space-6); }
+.principles .data { color: var(--on-inverse-muted); display: block; margin-bottom: var(--space-3); }
+.principles h3 { margin-bottom: var(--space-3); }
+.principles p { margin: 0; color: var(--on-inverse-muted); }
+.ledger { margin-top: var(--space-12); display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); font: 500 14px/20px var(--mono); color: var(--on-inverse-muted); }
+.ledger b { color: var(--on-inverse); font-weight: 500; }
+
+/* ---------- Ejercicios ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-8) 0; }
+.chip {
+  display: inline-flex; align-items: center; gap: var(--space-2); min-height: 40px; padding: 0 16px;
+  border-radius: var(--radius-pill); border: 1.5px solid var(--line); background: var(--paper-raised);
+  font: 600 15px/20px var(--sans); color: var(--ink); cursor: pointer; transition: border-color .15s;
+}
+.chip:hover { border-color: var(--ink-soft); }
+.chip[aria-pressed="true"] { border-color: var(--w, var(--ink)); }
+.chip[data-filter="all"][aria-pressed="true"] { background: var(--inverse); color: var(--on-inverse); border-color: var(--inverse); }
+.exercises { display: grid; gap: var(--space-4); }
+@media (min-width: 700px) { .exercises { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .exercises { grid-template-columns: repeat(3, 1fr); } }
+.ex-card { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-6); border-radius: var(--radius-md); background: var(--paper-raised); border: 1px solid var(--line); }
+.ex-card[hidden] { display: none; }
+.ex-world { display: inline-flex; align-items: center; gap: var(--space-2); font: 500 12px/16px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-muted); }
+.ex-card h3 { font-size: 21px; line-height: 27px; }
+.ex-card p { margin: 0; color: var(--ink-muted); }
+.ex-card .desc { flex: 1; }
+.ex-source { font-size: 14px; line-height: 22px; padding: var(--space-3) 0 0; border-top: 1px solid var(--line); }
+.ex-source span { font: 500 11px/16px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink); margin-right: 6px; }
+.ex-card .data { color: var(--ink); }
+.ex-count { margin: var(--space-6) 0 0; }
+
+/* ---------- Privacidad (problema crítico 3: contraste) ---------- */
+.privacy-grid { display: grid; gap: var(--space-8); }
+@media (min-width: 900px) { .privacy-grid { grid-template-columns: 5fr 7fr; gap: var(--space-12); } }
+.privacy-items { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+@media (min-width: 600px) { .privacy-items { grid-template-columns: repeat(2, 1fr); } }
+.privacy-items li { border: 1px solid var(--on-inverse-muted); border-radius: var(--radius-md); padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-2); color: var(--on-inverse); }
+.privacy-items .pill { align-self: flex-start; display: inline-flex; align-items: center; gap: var(--space-2); font: 600 15px/20px var(--sans); color: var(--on-inverse); }
+.privacy-items .pill svg { width: 18px; height: 18px; }
+.privacy-items p { margin: 0; color: var(--on-inverse-muted); }
+.privacy-items .link-btn { align-self: flex-start; color: var(--on-inverse); margin-top: var(--space-2); }
+.privacy-status { min-height: 26px; margin: var(--space-6) 0 0; color: var(--on-inverse); font: 500 14px/20px var(--mono); }
+
+/* ---------- Cierre ---------- */
+.closing { text-align: left; }
+.closing .display { max-width: 18ch; }
+
+/* ---------- Footer (mejora 12) ---------- */
+.site-footer { padding: var(--space-24) 0 var(--space-12); }
+.foot-sign { margin-bottom: var(--space-12); }
+.foot-sign .reflect { color: var(--on-inverse); }
+.foot-grid { display: grid; gap: var(--space-8); grid-template-columns: repeat(2, 1fr); padding: var(--space-8) 0; border-top: 1px solid var(--on-inverse-muted); }
+@media (min-width: 900px) { .foot-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+.foot-grid h2 { font: 500 12px/16px var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--on-inverse-muted); margin: 0 0 var(--space-4); }
+.foot-grid ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+.foot-grid a { color: var(--on-inverse); text-decoration: none; }
+.foot-grid a:hover { text-decoration: underline; }
+.foot-brand { grid-column: 1 / -1; }
+@media (min-width: 900px) { .foot-brand { grid-column: auto; } }
+.foot-brand .brand { color: var(--on-inverse); margin-bottom: var(--space-4); }
+.foot-brand p { margin: 0; color: var(--on-inverse-muted); max-width: 34ch; }
+.site-footer .lang { background: transparent; border-color: var(--on-inverse-muted); }
+.site-footer .lang button { color: var(--on-inverse-muted); }
+.site-footer .lang button[aria-pressed="true"] { background: var(--on-inverse); color: var(--inverse); }
+.foot-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-4); padding-top: var(--space-6); border-top: 1px solid var(--on-inverse-muted); color: var(--on-inverse-muted); font: 500 13px/20px var(--mono); }
+.site-footer :focus-visible { box-shadow: 0 0 0 2px var(--inverse), 0 0 0 4px var(--chispa); }
+
+/* ---------- Problema crítico 1: contenido visible sin animación ----------
+   Solo se oculta algo si el JS ya corrió (clase js-ready) y el usuario no pidió reducir movimiento. */
+.js-ready .reveal { opacity: 0; transform: translateY(16px); transition: opacity .8s ease-out, transform .8s ease-out; }
+.js-ready .reveal.is-in { opacity: 1; transform: none; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .js-ready .reveal { opacity: 1; transform: none; }
+}
+@media print {
+  .js-ready .reveal { opacity: 1 !important; transform: none !important; }
+  .site-header { position: static; }
+  .hero { min-height: 0; }
+}
+</style>
+<script>
+  // Antes del primer pintado: tema e idioma guardados, y la marca js-ready.
+  (function () {
+    var d = document.documentElement;
+    try {
+      var t = localStorage.getItem("hym-theme"); if (t) d.setAttribute("data-theme", t);
+      var q = new URLSearchParams(location.search).get("lang");
+      var l = q || localStorage.getItem("hym-lang"); if (l === "en") d.lang = "en";
+    } catch (e) {}
+    d.classList.add("js-ready");
+  })();
+</script>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Saltar al contenido</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Hack Your Mind">
+      <svg viewBox="0 0 16 22" aria-hidden="true">
+        <g fill="currentColor"><circle cx="2" cy="2.5" r="1.7"/><circle cx="2" cy="8.2" r="1.7"/><circle cx="2" cy="13.8" r="1.7"/><circle cx="2" cy="19.5" r="1.7"/>
+        <circle cx="14" cy="2.5" r="1.7"/><circle cx="14" cy="8.2" r="1.7"/><circle cx="14" cy="13.8" r="1.7"/><circle cx="14" cy="19.5" r="1.7"/></g>
+        <circle class="logo-dot" cx="8" cy="11" r="1.9"/>
+      </svg>
+      HACK YOUR MIND
+    </a>
+    <nav class="nav" aria-label="Principal" data-i18n-label="nav.label">
+      <a href="#diagnostico" data-i18n="nav.quiz">Diagnóstico</a>
+      <a href="#mundos" data-i18n="nav.worlds">Mundos</a>
+      <a href="#ejercicios" data-i18n="nav.exercises">Ejercicios</a>
+      <a href="#privacidad" data-i18n="nav.privacy">Privacidad</a>
+    </nav>
+    <div class="header-tools">
+      <div class="lang" role="group" aria-label="Idioma" data-i18n-label="lang.label">
+        <button type="button" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="icon-btn" type="button" id="themeBtn" aria-label="Cambiar tema" data-i18n-label="theme.label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
+      </button>
+      <button class="icon-btn menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Menú" data-i18n-label="menu.label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path class="bar b1" d="M5 8h14"/><path class="bar b2" d="M5 12h14"/><path class="bar b3" d="M5 16h14"/></svg>
+      </button>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav" hidden aria-label="Principal" data-i18n-label="nav.label">
+    <a href="#diagnostico" data-i18n="nav.quiz">Diagnóstico</a>
+    <a href="#mundos" data-i18n="nav.worlds">Mundos</a>
+    <a href="#ejercicios" data-i18n="nav.exercises">Ejercicios</a>
+    <a href="#privacidad" data-i18n="nav.privacy">Privacidad</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <canvas id="constellation" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="hero.eyebrow">Una plataforma interactiva de desarrollo humano</p>
+      <h1 class="display-xl" data-i18n="hero.title">El mundo está cambiando. <span class="soft">¿En quién te estás <em>convirtiendo</em>?</span></h1>
+      <p class="body-lg" data-i18n="hero.lead">Explora cómo piensas, entiéndete a ti mismo, desarrolla habilidades humanas y navega el cambio con más claridad. Con rigor, sin gurús y sin vender tus datos.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#diagnostico"><span data-i18n="hero.cta">Empieza tu viaje</span> <span class="arrow" aria-hidden="true">→</span></a>
+        <a href="#mundos" data-i18n="hero.secondary">o explora los cinco mundos ↓</a>
+      </div>
+      <ul class="hero-proof data">
+        <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2.5h6l2.5 2.5v8.5H4z"/><path d="M6.5 8h3.5M6.5 10.5h3.5"/></svg><span data-i18n="hero.proof1">Cada ejercicio cita su fuente</span></li>
+        <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="5.5" r="2.5"/><path d="M3 13.5c.8-2.4 2.8-3.5 5-3.5s4.2 1.1 5 3.5"/></svg><span data-i18n="hero.proof2">Sin cuenta para empezar</span></li>
+        <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg><span data-i18n="hero.proof3">Tus datos se quedan contigo</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- DIAGNÓSTICO (mejora 11) -->
+  <section class="section band-sunk" id="diagnostico">
+    <div class="wrap quiz-grid">
+      <div class="quiz-aside reveal">
+        <p class="eyebrow" data-i18n="quiz.eyebrow">Diagnóstico · 60 segundos</p>
+        <h2 class="display" data-i18n="quiz.title">Tres preguntas. <span class="soft">¿Qué mundo necesitas <em>hoy</em>?</span></h2>
+        <p class="body-lg" data-i18n="quiz.lead">No es un test de personalidad ni te pone una etiqueta. Te da un punto de partida, y puedes cambiarlo cuando quieras.</p>
+        <ul class="data">
+          <li><span>+20</span><span data-i18n="quiz.b1">Hack Points por terminarlo</span></li>
+          <li><span>0</span><span data-i18n="quiz.b2">datos enviados: el resultado se guarda en tu dispositivo</span></li>
+        </ul>
+      </div>
+
+      <form class="quiz reveal" id="quiz" novalidate>
+        <div class="q-top">
+          <span class="data" id="qCount" aria-live="polite">1 / 3</span>
+          <div class="q-progress" aria-hidden="true"><span id="qBar"></span></div>
+        </div>
+
+        <fieldset class="q-step">
+          <legend><span class="data" data-i18n="quiz.q1.n">Pregunta 1</span><span class="reflect" data-i18n="quiz.q1">Esta semana, lo que más te pesa es…</span></legend>
+          <div class="q-options">
+            <label class="q-opt"><input type="radio" name="q1" value="mind"><span class="tick"></span><span data-i18n="quiz.q1.mind">Decidir sin darle mil vueltas</span></label>
+            <label class="q-opt"><input type="radio" name="q1" value="growth"><span class="tick"></span><span data-i18n="quiz.q1.growth">Entender por qué reacciono como reacciono</span></label>
+            <label class="q-opt"><input type="radio" name="q1" value="leadership"><span class="tick"></span><span data-i18n="quiz.q1.leadership">Una conversación difícil con alguien</span></label>
+            <label class="q-opt"><input type="radio" name="q1" value="business"><span class="tick"></span><span data-i18n="quiz.q1.business">Un proyecto que no termina de despegar</span></label>
+            <label class="q-opt"><input type="radio" name="q1" value="future"><span class="tick"></span><span data-i18n="quiz.q1.future">La sensación de que la IA me deja atrás</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="q-step">
+          <legend><span class="data" data-i18n="quiz.q2.n">Pregunta 2</span><span class="reflect" data-i18n="quiz.q2">Cuando algo sale mal, tu primer impulso es…</span></legend>
+          <div class="q-options">
+            <label class="q-opt"><input type="radio" name="q2" value="mind"><span class="tick"></span><span data-i18n="quiz.q2.mind">Analizarlo hasta el último detalle</span></label>
+            <label class="q-opt"><input type="radio" name="q2" value="growth"><span class="tick"></span><span data-i18n="quiz.q2.growth">Culparme</span></label>
+            <label class="q-opt"><input type="radio" name="q2" value="leadership"><span class="tick"></span><span data-i18n="quiz.q2.leadership">Hablarlo con alguien</span></label>
+            <label class="q-opt"><input type="radio" name="q2" value="business"><span class="tick"></span><span data-i18n="quiz.q2.business">Arreglarlo cuanto antes</span></label>
+            <label class="q-opt"><input type="radio" name="q2" value="future"><span class="tick"></span><span data-i18n="quiz.q2.future">Preguntarme si vale la pena seguir</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="q-step">
+          <legend><span class="data" data-i18n="quiz.q3.n">Pregunta 3</span><span class="reflect" data-i18n="quiz.q3">Dentro de un año te gustaría…</span></legend>
+          <div class="q-options">
+            <label class="q-opt"><input type="radio" name="q3" value="mind"><span class="tick"></span><span data-i18n="quiz.q3.mind">Pensar con más claridad bajo presión</span></label>
+            <label class="q-opt"><input type="radio" name="q3" value="growth"><span class="tick"></span><span data-i18n="quiz.q3.growth">Conocerme mejor</span></label>
+            <label class="q-opt"><input type="radio" name="q3" value="leadership"><span class="tick"></span><span data-i18n="quiz.q3.leadership">Que la gente quiera trabajar conmigo</span></label>
+            <label class="q-opt"><input type="radio" name="q3" value="business"><span class="tick"></span><span data-i18n="quiz.q3.business">Haber lanzado algo propio</span></label>
+            <label class="q-opt"><input type="radio" name="q3" value="future"><span class="tick"></span><span data-i18n="quiz.q3.future">Estar en paz con la incertidumbre</span></label>
+          </div>
+        </fieldset>
+
+        <div class="q-nav"><button type="button" class="link-btn" id="qBack" hidden data-i18n="quiz.back">← Anterior</button></div>
+        <noscript><p class="data" style="margin-top:24px">Activa JavaScript para ver tu resultado. · Turn on JavaScript to see your result.</p></noscript>
+
+        <div class="q-result" id="qResult" hidden aria-live="polite">
+          <p class="eyebrow" data-i18n="quiz.r.eyebrow">Tu punto de partida</p>
+          <p class="q-world" id="qrWorld"><span class="dot"></span><span id="qrName"></span></p>
+          <p class="reflect" id="qrQuestion"></p>
+          <p class="first" id="qrFirst"></p>
+          <p class="data"><span data-i18n="quiz.r.points">+20 Hack Points · guardado solo en este dispositivo</span></p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#ejercicios" id="qrGo"><span data-i18n="quiz.r.go">Ver sus ejercicios</span> <span class="arrow" aria-hidden="true">→</span></a>
+            <button type="button" class="link-btn" id="qrAgain" data-i18n="quiz.r.again">Repetir el diagnóstico</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- MUNDOS (mejora 5) -->
+  <section class="section" id="mundos">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="eyebrow" data-i18n="worlds.eyebrow">Los cinco mundos</p>
+        <h2 class="display" data-i18n="worlds.title">Cinco mundos para crecer. <span class="soft">¿Por cuál <em>empiezas</em>?</span></h2>
+        <p class="body-lg" data-i18n="worlds.lead">Cada mundo es una pregunta que vale la pena hacerse. Los ejercicios son la forma de responderla con calma.</p>
+      </div>
+      <div class="worlds">
+        <a class="world-card reveal" href="#ejercicios" data-world="mind" data-goto="mind">
+          <span class="world-num"><span class="dot"></span>01</span>
+          <h3 class="heading" data-i18n="w.mind">Mente</h3>
+          <p class="quote" data-i18n="w.mind.q">¿Qué es lo que crees que sabes?</p>
+          <p class="desc" data-i18n="w.mind.d">Sesgos, decisiones y atención: cómo funciona tu cabeza, para usarla mejor.</p>
+          <div class="world-meta data"><span data-i18n="w.mind.m">2 ejercicios · 25 min</span><span class="go" aria-hidden="true">→</span></div>
+        </a>
+        <a class="world-card reveal" href="#ejercicios" data-world="growth" data-goto="growth">
+          <span class="world-num"><span class="dot"></span>02</span>
+          <h3 class="heading" data-i18n="w.growth">Crecimiento</h3>
+          <p class="quote" data-i18n="w.growth.q">¿Por qué reaccionas como reaccionas?</p>
+          <p class="desc" data-i18n="w.growth.d">Emociones, hábitos y valores. Entenderte sin juzgarte.</p>
+          <div class="world-meta data"><span data-i18n="w.growth.m">2 ejercicios · 20 min</span><span class="go" aria-hidden="true">→</span></div>
+        </a>
+        <a class="world-card reveal" href="#ejercicios" data-world="leadership" data-goto="leadership">
+          <span class="world-num"><span class="dot"></span>03</span>
+          <h3 class="heading" data-i18n="w.leadership">Liderazgo</h3>
+          <p class="quote" data-i18n="w.leadership.q">¿Qué pasa en una sala cuando tú hablas?</p>
+          <p class="desc" data-i18n="w.leadership.d">Habilidades humanas: escuchar, dar feedback y sostener conversaciones difíciles.</p>
+          <div class="world-meta data"><span data-i18n="w.leadership.m">2 ejercicios · 27 min</span><span class="go" aria-hidden="true">→</span></div>
+        </a>
+        <a class="world-card reveal" href="#ejercicios" data-world="business" data-goto="business">
+          <span class="world-num"><span class="dot"></span>04</span>
+          <h3 class="heading" data-i18n="w.business">Negocio</h3>
+          <p class="quote" data-i18n="w.business.q">¿Qué problema resuelves de verdad?</p>
+          <p class="desc" data-i18n="w.business.d">Pensar como alguien que construye: valor, riesgo y decisiones con información incompleta.</p>
+          <div class="world-meta data"><span data-i18n="w.business.m">2 ejercicios · 22 min</span><span class="go" aria-hidden="true">→</span></div>
+        </a>
+        <a class="world-card reveal" href="#ejercicios" data-world="future" data-goto="future">
+          <span class="world-num"><span class="dot"></span>05</span>
+          <h3 class="heading" data-i18n="w.future">Futuro</h3>
+          <p class="quote" data-i18n="w.future.q">¿Qué harás cuando cambien las reglas?</p>
+          <p class="desc" data-i18n="w.future.d">Navegar el cambio, la IA y la incertidumbre con criterio, no con miedo.</p>
+          <div class="world-meta data"><span data-i18n="w.future.m">2 ejercicios · 25 min</span><span class="go" aria-hidden="true">→</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAMIFICACIÓN ÉTICA -->
+  <section class="section band-inverse" id="hack-points">
+    <div class="wrap reveal">
+      <p class="eyebrow" data-i18n="game.eyebrow">Gamificación ética</p>
+      <h2 class="display" data-i18n="game.title">Los puntos premian la profundidad. <span class="soft">¿Para qué <em>correr</em>?</span></h2>
+      <ul class="principles">
+        <li><span class="data">01</span><h3 class="heading" data-i18n="game.p1">Puntos por pensar, no por clics</h3><p data-i18n="game.p1.d">Un ejercicio da más Hack Points cuando escribes tu reflexión, no cuando lo terminas rápido.</p></li>
+        <li><span class="data">02</span><h3 class="heading" data-i18n="game.p2">Rachas opcionales</h3><p data-i18n="game.p2.d">Las activas si quieres. Si un día no entras, no pierdes nada: retomas donde lo dejaste.</p></li>
+        <li><span class="data">03</span><h3 class="heading" data-i18n="game.p3">Sin ranking público</h3><p data-i18n="game.p3.d">Tu progreso no compite con el de nadie. Lo ves tú y nadie más.</p></li>
+      </ul>
+      <p class="ledger" aria-label="Ejemplo de Hack Points" data-i18n-label="game.ledger.label">
+        <span data-i18n="game.l1">Reflexión escrita <b>+40</b></span>
+        <span data-i18n="game.l2">Ejercicio completado <b>+10</b></span>
+        <span data-i18n="game.l3">Racha rota <b>−0</b></span>
+      </p>
+    </div>
+  </section>
+
+  <!-- EJERCICIOS (mejoras 4 y 10) -->
+  <section class="section" id="ejercicios">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="eyebrow" data-i18n="ex.eyebrow">Ejercicios</p>
+        <h2 class="display" data-i18n="ex.title">Cada ejercicio cita su fuente. <span class="soft">¿Quieres ver de dónde <em>sale</em>?</span></h2>
+        <p class="body-lg" data-i18n="ex.lead">Nada de "la ciencia dice" sin decir quién. Cuando la evidencia es débil o discutida, también te lo contamos.</p>
+      </div>
+
+      <div class="chips" role="group" aria-label="Filtrar por mundo" data-i18n-label="ex.filter">
+        <button type="button" class="chip" data-filter="all" aria-pressed="true" data-i18n="chip.all">Todos</button>
+        <button type="button" class="chip" data-filter="mind" data-world="mind" aria-pressed="false"><span class="dot"></span><span data-i18n="w.mind">Mente</span></button>
+        <button type="button" class="chip" data-filter="growth" data-world="growth" aria-pressed="false"><span class="dot"></span><span data-i18n="w.growth">Crecimiento</span></button>
+        <button type="button" class="chip" data-filter="leadership" data-world="leadership" aria-pressed="false"><span class="dot"></span><span data-i18n="w.leadership">Liderazgo</span></button>
+        <button type="button" class="chip" data-filter="business" data-world="business" aria-pressed="false"><span class="dot"></span><span data-i18n="w.business">Negocio</span></button>
+        <button type="button" class="chip" data-filter="future" data-world="future" aria-pressed="false"><span class="dot"></span><span data-i18n="w.future">Futuro</span></button>
+      </div>
+
+      <div class="exercises" id="exList">
+        <article class="ex-card" data-world="mind">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.mind">Mente</span></span>
+          <h3 class="heading" data-i18n="e1.t">Caza tu ancla</h3>
+          <p class="desc" data-i18n="e1.d">Detecta el primer número que se te coló en una decisión reciente y cómo movió todo lo demás.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Tversky &amp; Kahneman (1974), <i>Science</i></p>
+          <p class="data" data-i18n="e1.m">10 min · +30 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="mind">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.mind">Mente</span></span>
+          <h3 class="heading" data-i18n="e2.t">Pre-mortem personal</h3>
+          <p class="desc" data-i18n="e2.d">Imagina que tu plan ya fracasó y escribe por qué. Encuentras riesgos que el optimismo esconde.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Klein (2007), <i>Harvard Business Review</i></p>
+          <p class="data" data-i18n="e2.m">15 min · +40 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="growth">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.growth">Crecimiento</span></span>
+          <h3 class="heading" data-i18n="e3.t">Háblate en tercera persona</h3>
+          <p class="desc" data-i18n="e3.d">Toma distancia de una emoción intensa usando tu propio nombre. Pequeño gesto, efecto medible.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Kross &amp; Ayduk (2017), <i>Advances in Experimental Social Psychology</i></p>
+          <p class="data" data-i18n="e3.m">8 min · +25 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="growth">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.growth">Crecimiento</span></span>
+          <h3 class="heading" data-i18n="e4.t">Reencuadra la emoción</h3>
+          <p class="desc" data-i18n="e4.d">Practica cambiar la lectura de una situación antes de que la emoción decida por ti.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Gross (1998), <i>Review of General Psychology</i></p>
+          <p class="data" data-i18n="e4.m">12 min · +35 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="leadership">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.leadership">Liderazgo</span></span>
+          <h3 class="heading" data-i18n="e5.t">Mapa de seguridad psicológica</h3>
+          <p class="desc" data-i18n="e5.d">¿Quién en tu equipo se atreve a decir "me equivoqué"? Mide el clima antes de cambiarlo.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Edmondson (1999), <i>Administrative Science Quarterly</i></p>
+          <p class="data" data-i18n="e5.m">15 min · +40 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="leadership">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.leadership">Liderazgo</span></span>
+          <h3 class="heading" data-i18n="e6.t">Feedback que se puede usar</h3>
+          <p class="desc" data-i18n="e6.d">El feedback no siempre ayuda: a veces empeora el desempeño. Aprende a darlo sobre la tarea, no sobre la persona.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Kluger &amp; DeNisi (1996), <i>Psychological Bulletin</i></p>
+          <p class="data" data-i18n="e6.m">12 min · +35 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="business">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.business">Negocio</span></span>
+          <h3 class="heading" data-i18n="e7.t">Si pasa esto, haré aquello</h3>
+          <p class="desc" data-i18n="e7.d">Convierte la intención "avanzar con el proyecto" en planes concretos de cuándo, dónde y cómo.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Gollwitzer (1999), <i>American Psychologist</i></p>
+          <p class="data" data-i18n="e7.m">10 min · +30 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="business">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.business">Negocio</span></span>
+          <h3 class="heading" data-i18n="e8.t">Lo que mueve a tu equipo (no es el bono)</h3>
+          <p class="desc" data-i18n="e8.d">Autonomía, competencia y vínculo: revisa cuál de las tres le falta a tu proyecto.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Ryan &amp; Deci (2000), <i>American Psychologist</i></p>
+          <p class="data" data-i18n="e8.m">12 min · +35 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="future">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.future">Futuro</span></span>
+          <h3 class="heading" data-i18n="e9.t">Calibra tus predicciones</h3>
+          <p class="desc" data-i18n="e9.d">Pon porcentajes a lo que crees que pasará y revísalos después. Así se entrena el buen juicio.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Tetlock &amp; Gardner (2015), <i>Superforecasting</i></p>
+          <p class="data" data-i18n="e9.m">15 min · +40 Hack Points</p>
+        </article>
+        <article class="ex-card" data-world="future">
+          <span class="ex-world"><span class="dot"></span><span data-i18n="w.future">Futuro</span></span>
+          <h3 class="heading" data-i18n="e10.t">Un hábito en 66 días (o más)</h3>
+          <p class="desc" data-i18n="e10.d">Los "21 días" son un mito. La mediana fue 66, con mucha variación. Diseña uno nuevo sabiéndolo.</p>
+          <p class="ex-source"><span data-i18n="src">Fuente</span>Lally et al. (2010), <i>European Journal of Social Psychology</i></p>
+          <p class="data" data-i18n="e10.m">10 min · +30 Hack Points</p>
+        </article>
+      </div>
+      <p class="data ex-count" id="exCount" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- PRIVACIDAD -->
+  <section class="section band-inverse" id="privacidad">
+    <div class="wrap privacy-grid">
+      <div class="reveal">
+        <p class="eyebrow" data-i18n="priv.eyebrow">Privacidad por diseño</p>
+        <h2 class="display" data-i18n="priv.title">Tus datos son tuyos. <span class="soft">¿De quién más iban a <em>ser</em>?</span></h2>
+        <p class="body-lg" data-i18n="priv.lead">Nunca vendemos tus datos ni usamos tus resultados para publicidad.</p>
+      </div>
+      <div class="reveal">
+        <ul class="privacy-items">
+          <li><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.2-3.6 3.9-5.5 7-5.5s5.8 1.9 7 5.5"/></svg><span data-i18n="priv.i1">Modo invitado</span></span><p data-i18n="priv.i1.d">Empieza sin cuenta y sin correo.</p></li>
+          <li><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="3" width="12" height="18" rx="2.5"/><path d="M10.5 18h3"/></svg><span data-i18n="priv.i2">Local-first</span></span><p data-i18n="priv.i2.d">Tus respuestas se guardan en tu dispositivo, no en nuestros servidores.</p></li>
+          <li><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></svg><span data-i18n="priv.i3">Exportar datos</span></span><p data-i18n="priv.i3.d">Llévate todo en un archivo, cuando quieras.</p><button type="button" class="link-btn" id="exportBtn" data-i18n="priv.export">Exportar ahora</button></li>
+          <li><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14M10 4h4M7 7l1 13h8l1-13"/></svg><span data-i18n="priv.i4">Borrar datos</span></span><p data-i18n="priv.i4.d">Un botón y se borra. Sin formularios ni correos.</p><button type="button" class="link-btn" id="deleteBtn" data-i18n="priv.delete">Borrar ahora</button></li>
+        </ul>
+        <p class="privacy-status" id="privStatus" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIERRE -->
+  <section class="section closing">
+    <div class="wrap reveal">
+      <h2 class="display" data-i18n="close.title">El mundo seguirá cambiando. <span class="soft">¿Sigues aprendiendo a <em>navegarlo</em>?</span></h2>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#diagnostico"><span data-i18n="hero.cta">Empieza tu viaje</span> <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer band-inverse">
+  <div class="wrap">
+    <div class="foot-sign">
+      <p class="reflect" data-i18n="foot.sign">¿Cuál es tu próximo hack?</p>
+    </div>
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top" aria-label="Hack Your Mind">
+          <svg viewBox="0 0 16 22" aria-hidden="true">
+            <g fill="currentColor"><circle cx="2" cy="2.5" r="1.7"/><circle cx="2" cy="8.2" r="1.7"/><circle cx="2" cy="13.8" r="1.7"/><circle cx="2" cy="19.5" r="1.7"/>
+            <circle cx="14" cy="2.5" r="1.7"/><circle cx="14" cy="8.2" r="1.7"/><circle cx="14" cy="13.8" r="1.7"/><circle cx="14" cy="19.5" r="1.7"/></g>
+            <circle class="logo-dot" cx="8" cy="11" r="1.9"/>
+          </svg>
+          HACK YOUR MIND
+        </a>
+        <p data-i18n="foot.tag">De ruido a forma. De dudas a dirección.</p>
+      </div>
+      <nav aria-labelledby="f-explore">
+        <h2 id="f-explore" data-i18n="foot.explore">Explorar</h2>
+        <ul>
+          <li><a href="#diagnostico" data-i18n="nav.quiz">Diagnóstico</a></li>
+          <li><a href="#mundos" data-i18n="nav.worlds">Mundos</a></li>
+          <li><a href="#ejercicios" data-i18n="nav.exercises">Ejercicios</a></li>
+          <li><a href="#hack-points">Hack Points</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-trust">
+        <h2 id="f-trust" data-i18n="foot.trust">Confianza</h2>
+        <ul>
+          <li><a href="#privacidad" data-i18n="foot.privacy">Privacidad por diseño</a></li>
+          <li><a href="/privacidad" data-i18n="foot.policy">Política de privacidad</a></li>
+          <li><a href="#ejercicios" data-i18n="foot.sources">Fuentes</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h2 data-i18n="foot.follow">Síguenos</h2>
+        <ul>
+          <li><a href="https://instagram.com/" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://www.youtube.com/" rel="noopener">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Hack Your Mind</span>
+      <div class="lang" role="group" aria-label="Idioma" data-i18n-label="lang.label">
+        <button type="button" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    del: function (k) { try { localStorage.removeItem(k); } catch (e) {} }
+  };
+  function $(s, c) { return (c || document).querySelector(s); }
+  function $$(s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); }
+
+  /* ---------- Idioma: un idioma por pantalla (mejora 4) ---------- */
+  var EN = {
+    "skip": "Skip to content",
+    "nav.label": "Main", "nav.quiz": "Quiz", "nav.worlds": "Worlds", "nav.exercises": "Exercises", "nav.privacy": "Privacy",
+    "lang.label": "Language", "theme.label": "Switch theme", "menu.label": "Menu",
+    "hero.eyebrow": "An interactive platform for human development",
+    "hero.title": 'The world is changing. <span class="soft">Who are you <em>becoming</em>?</span>',
+    "hero.lead": "Explore how you think, understand yourself, build human skills and navigate change with more clarity. With rigor, no gurus, and without selling your data.",
+    "hero.cta": "Start your journey", "hero.secondary": "or explore the five worlds ↓",
+    "hero.proof1": "Every exercise cites its source", "hero.proof2": "No account to start", "hero.proof3": "Your data stays with you",
+    "quiz.eyebrow": "Quiz · 60 seconds",
+    "quiz.title": 'Three questions. <span class="soft">Which world do you need <em>today</em>?</span>',
+    "quiz.lead": "It's not a personality test and it won't label you. It gives you a starting point, and you can change it anytime.",
+    "quiz.b1": "Hack Points for finishing it", "quiz.b2": "data sent: your result is stored on your device",
+    "quiz.q1.n": "Question 1", "quiz.q1": "This week, what weighs on you most is…",
+    "quiz.q1.mind": "Deciding without overthinking it", "quiz.q1.growth": "Understanding why I react the way I do",
+    "quiz.q1.leadership": "A difficult conversation with someone", "quiz.q1.business": "A project that won't take off",
+    "quiz.q1.future": "The feeling that AI is leaving me behind",
+    "quiz.q2.n": "Question 2", "quiz.q2": "When something goes wrong, your first impulse is to…",
+    "quiz.q2.mind": "Analyze it down to the last detail", "quiz.q2.growth": "Blame myself",
+    "quiz.q2.leadership": "Talk it through with someone", "quiz.q2.business": "Fix it as fast as possible",
+    "quiz.q2.future": "Wonder if it's worth going on",
+    "quiz.q3.n": "Question 3", "quiz.q3": "A year from now, you'd like to…",
+    "quiz.q3.mind": "Think more clearly under pressure", "quiz.q3.growth": "Know myself better",
+    "quiz.q3.leadership": "Have people want to work with me", "quiz.q3.business": "Have launched something of my own",
+    "quiz.q3.future": "Be at peace with uncertainty",
+    "quiz.back": "← Back",
+    "quiz.r.eyebrow": "Your starting point", "quiz.r.points": "+20 Hack Points · stored only on this device",
+    "quiz.r.go": "See its exercises", "quiz.r.again": "Retake the quiz",
+    "worlds.eyebrow": "The five worlds",
+    "worlds.title": 'Five worlds to grow. <span class="soft">Where do you <em>begin</em>?</span>',
+    "worlds.lead": "Each world is a question worth asking. The exercises are a way to answer it, slowly.",
+    "w.mind": "Mind", "w.mind.q": "What do you think you know?", "w.mind.d": "Biases, decisions and attention: how your mind works, so you can use it better.", "w.mind.m": "2 exercises · 25 min",
+    "w.growth": "Growth", "w.growth.q": "Why do you react the way you do?", "w.growth.d": "Emotions, habits and values. Understanding yourself without judging yourself.", "w.growth.m": "2 exercises · 20 min",
+    "w.leadership": "Leadership", "w.leadership.q": "What happens in a room when you speak?", "w.leadership.d": "Human skills: listening, giving feedback and holding difficult conversations.", "w.leadership.m": "2 exercises · 27 min",
+    "w.business": "Business", "w.business.q": "What problem do you really solve?", "w.business.d": "Thinking like a builder: value, risk and decisions with incomplete information.", "w.business.m": "2 exercises · 22 min",
+    "w.future": "Future", "w.future.q": "What will you do when the rules change?", "w.future.d": "Navigating change, AI and uncertainty with judgment, not fear.", "w.future.m": "2 exercises · 25 min",
+    "game.eyebrow": "Ethical gamification",
+    "game.title": 'Points reward depth. <span class="soft">Why <em>rush</em>?</span>',
+    "game.p1": "Points for thinking, not clicking", "game.p1.d": "An exercise earns more Hack Points when you write your reflection, not when you finish fast.",
+    "game.p2": "Optional streaks", "game.p2.d": "Turn them on if you want. Miss a day and you lose nothing: pick up where you left off.",
+    "game.p3": "No public leaderboard", "game.p3.d": "Your progress doesn't compete with anyone's. Only you can see it.",
+    "game.ledger.label": "Hack Points example",
+    "game.l1": "Written reflection <b>+40</b>", "game.l2": "Exercise completed <b>+10</b>", "game.l3": "Broken streak <b>−0</b>",
+    "ex.eyebrow": "Exercises",
+    "ex.title": 'Every exercise cites its source. <span class="soft">Want to see where it <em>comes from</em>?</span>',
+    "ex.lead": "No \"science says\" without saying who. When the evidence is weak or disputed, we tell you that too.",
+    "ex.filter": "Filter by world", "chip.all": "All", "src": "Source",
+    "e1.t": "Catch your anchor", "e1.d": "Spot the first number that slipped into a recent decision and how it moved everything else.", "e1.m": "10 min · +30 Hack Points",
+    "e2.t": "Personal pre-mortem", "e2.d": "Imagine your plan already failed and write down why. You'll find risks optimism hides.", "e2.m": "15 min · +40 Hack Points",
+    "e3.t": "Talk to yourself in the third person", "e3.d": "Step back from an intense emotion using your own name. A small move with a measurable effect.", "e3.m": "8 min · +25 Hack Points",
+    "e4.t": "Reframe the emotion", "e4.d": "Practice changing how you read a situation before the emotion decides for you.", "e4.m": "12 min · +35 Hack Points",
+    "e5.t": "Psychological safety map", "e5.d": "Who on your team dares to say \"I was wrong\"? Measure the climate before you change it.", "e5.m": "15 min · +40 Hack Points",
+    "e6.t": "Feedback people can use", "e6.d": "Feedback doesn't always help: sometimes it makes performance worse. Learn to aim it at the task, not the person.", "e6.m": "12 min · +35 Hack Points",
+    "e7.t": "If this happens, I'll do that", "e7.d": "Turn \"move the project forward\" into concrete plans for when, where and how.", "e7.m": "10 min · +30 Hack Points",
+    "e8.t": "What drives your team (it's not the bonus)", "e8.d": "Autonomy, competence and relatedness: check which one your project is missing.", "e8.m": "12 min · +35 Hack Points",
+    "e9.t": "Calibrate your predictions", "e9.d": "Put percentages on what you think will happen and review them later. That's how judgment is trained.", "e9.m": "15 min · +40 Hack Points",
+    "e10.t": "A habit in 66 days (or more)", "e10.d": "\"21 days\" is a myth. The median was 66, with wide variation. Design a new one knowing that.", "e10.m": "10 min · +30 Hack Points",
+    "priv.eyebrow": "Privacy by design",
+    "priv.title": 'Your data is yours. <span class="soft">Whose else would it <em>be</em>?</span>',
+    "priv.lead": "We never sell your data or use your results for advertising.",
+    "priv.i1": "Guest mode", "priv.i1.d": "Start with no account and no email.",
+    "priv.i2": "Local-first", "priv.i2.d": "Your answers are stored on your device, not on our servers.",
+    "priv.i3": "Export data", "priv.i3.d": "Take everything with you in one file, whenever you want.", "priv.export": "Export now",
+    "priv.i4": "Delete data", "priv.i4.d": "One button and it's gone. No forms, no emails.", "priv.delete": "Delete now",
+    "close.title": 'The world will keep changing. <span class="soft">Are you still learning to <em>navigate</em> it?</span>',
+    "foot.sign": "What's your next hack?", "foot.tag": "From noise to form. From doubt to direction.",
+    "foot.explore": "Explore", "foot.trust": "Trust", "foot.privacy": "Privacy by design", "foot.policy": "Privacy policy",
+    "foot.sources": "Sources", "foot.follow": "Follow us"
+  };
+  var DYN = {
+    es: { title: "Hack Your Mind", first: "Primer ejercicio: ", shown: "{n} de 10 ejercicios", count: "{i} / 3",
+          exported: "Listo: descargaste tus datos.", deleted: "Listo: borramos todo lo guardado en este dispositivo.", empty: "No hay nada guardado todavía.",
+          confirm: "¿Borrar tu resultado y tus preferencias de este dispositivo?" },
+    en: { title: "Hack Your Mind", first: "First exercise: ", shown: "{n} of 10 exercises", count: "{i} / 3",
+          exported: "Done: your data was downloaded.", deleted: "Done: everything stored on this device was deleted.", empty: "Nothing is stored yet.",
+          confirm: "Delete your result and preferences from this device?" }
+  };
+  var WORLD_ORDER = ["mind", "growth", "leadership", "business", "future"];
+  var lang = root.lang === "en" ? "en" : "es";
+  var textNodes = $$("[data-i18n]");
+  var labelNodes = $$("[data-i18n-label]");
+  textNodes.forEach(function (n) { n.dataset.es = n.innerHTML; });
+  labelNodes.forEach(function (n) { n.dataset.esLabel = n.getAttribute("aria-label") || ""; });
+  function t(k) { return DYN[lang][k]; }
+
+  function setLang(l, save) {
+    lang = l === "en" ? "en" : "es";
+    root.lang = lang;
+    textNodes.forEach(function (n) {
+      var v = lang === "en" ? EN[n.dataset.i18n] : null;
+      n.innerHTML = v != null ? v : n.dataset.es;
+    });
+    labelNodes.forEach(function (n) {
+      var v = lang === "en" ? EN[n.dataset.i18nLabel] : null;
+      n.setAttribute("aria-label", v != null ? v : n.dataset.esLabel);
+    });
+    $$(".lang button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.lang === lang)); });
+    document.title = t("title");
+    if (save) store.set("hym-lang", lang);
+    updateCount();
+    renderQuizCount();
+    if (quizState.result) renderResult(quizState.result);
+  }
+  $$(".lang button").forEach(function (b) { b.addEventListener("click", function () { setLang(b.dataset.lang, true); }); });
+
+  /* ---------- Tema ---------- */
+  var themeBtn = $("#themeBtn");
+  function isDark() {
+    var a = root.getAttribute("data-theme");
+    return a ? a === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  themeBtn.addEventListener("click", function () {
+    var next = isDark() ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    store.set("hym-theme", next);
+    constellation.recolor();
+  });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { constellation.recolor(); });
+
+  /* ---------- Menú móvil ---------- */
+  var menuBtn = $("#menuBtn"), mobileNav = $("#mobileNav");
+  function closeMenu() { mobileNav.hidden = true; menuBtn.setAttribute("aria-expanded", "false"); }
+  menuBtn.addEventListener("click", function () {
+    var open = mobileNav.hidden;
+    mobileNav.hidden = !open; menuBtn.setAttribute("aria-expanded", String(open));
+  });
+  $$("a", mobileNav).forEach(function (a) { a.addEventListener("click", closeMenu); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !mobileNav.hidden) { closeMenu(); menuBtn.focus(); } });
+
+  /* ---------- Reveal: mejora, nunca requisito ---------- */
+  var reveals = $$(".reveal");
+  if (reduce.matches || !("IntersectionObserver" in window)) {
+    reveals.forEach(function (el) { el.classList.add("is-in"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); } });
+    }, { rootMargin: "0px 0px -8% 0px" });
+    reveals.forEach(function (el) { io.observe(el); });
+    // Red de seguridad: pase lo que pase, en 2.5 s todo es visible.
+    setTimeout(function () { reveals.forEach(function (el) { el.classList.add("is-in"); }); }, 2500);
+  }
+  window.addEventListener("beforeprint", function () { reveals.forEach(function (el) { el.classList.add("is-in"); }); });
+
+  /* ---------- Filtro de ejercicios ---------- */
+  var chips = $$(".chip"), cards = $$("#exList .ex-card"), exCount = $("#exCount");
+  var currentFilter = "all";
+  function applyFilter(f) {
+    currentFilter = f;
+    chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c.dataset.filter === f)); });
+    cards.forEach(function (c) { c.hidden = f !== "all" && c.dataset.world !== f; });
+    updateCount();
+  }
+  function updateCount() {
+    var n = cards.filter(function (c) { return !c.hidden; }).length;
+    exCount.textContent = t("shown").replace("{n}", n);
+  }
+  chips.forEach(function (c) { c.addEventListener("click", function () { applyFilter(c.dataset.filter); }); });
+  $$("[data-goto]").forEach(function (a) { a.addEventListener("click", function () { applyFilter(a.dataset.goto); }); });
+
+  /* ---------- Diagnóstico ---------- */
+  var quiz = $("#quiz"), steps = $$(".q-step", quiz), qBar = $("#qBar"), qCount = $("#qCount"), qBack = $("#qBack");
+  var qResult = $("#qResult");
+  var quizState = { i: 0, answers: [], result: null };
+  quiz.classList.add("is-live");
+
+  function renderQuizCount() { qCount.textContent = t("count").replace("{i}", quizState.i + 1); }
+  function showStep(i) {
+    quizState.i = i;
+    steps.forEach(function (s, k) { s.classList.toggle("is-current", k === i); });
+    qBar.style.width = ((i + 1) / steps.length * 100) + "%";
+    qBack.hidden = i === 0;
+    renderQuizCount();
+  }
+  function score(answers) {
+    var tally = {};
+    answers.forEach(function (w) { tally[w] = (tally[w] || 0) + 1; });
+    var best = answers[0], max = 0;
+    WORLD_ORDER.forEach(function (w) { if ((tally[w] || 0) > max) { max = tally[w]; best = w; } });
+    // En empate gana la primera respuesta: lo que más pesa hoy.
+    if (max === 1) best = answers[0];
+    return best;
+  }
+  function renderResult(w) {
+    var card = $('.world-card[data-world="' + w + '"]');
+    var ex = $('#exList .ex-card[data-world="' + w + '"] h3');
+    $("#qrWorld").setAttribute("data-world", w);
+    $("#qrName").textContent = $("h3", card).textContent;
+    $("#qrQuestion").textContent = $(".quote", card).textContent;
+    $("#qrFirst").textContent = t("first") + (ex ? ex.textContent : "");
+    $("#qrGo").dataset.goto = w;
+  }
+  function finish(w, focus) {
+    quizState.result = w;
+    renderResult(w);
+    quiz.classList.add("is-done");
+    qResult.hidden = false;
+    if (focus) {
+      var head = $("#qrWorld");
+      head.setAttribute("tabindex", "-1");
+      head.focus({ preventScroll: true });
+    }
+  }
+  function reset() {
+    quizState = { i: 0, answers: [], result: null };
+    $$("input", quiz).forEach(function (inp) { inp.checked = false; });
+    quiz.classList.remove("is-done");
+    qResult.hidden = true;
+    showStep(0);
+  }
+  steps.forEach(function (s, k) {
+    $$("input", s).forEach(function (inp) {
+      inp.addEventListener("change", function () {
+        quizState.answers[k] = inp.value;
+        setTimeout(function () {
+          if (k < steps.length - 1) {
+            showStep(k + 1);
+            var first = $("input", steps[k + 1]); if (first) first.focus({ preventScroll: true });
+          } else {
+            var w = score(quizState.answers.slice(0, steps.length));
+            store.set("hym-quiz", JSON.stringify({ world: w, answers: quizState.answers, points: 20, date: new Date().toISOString() }));
+            finish(w, true);
+          }
+        }, reduce.matches ? 0 : 280);
+      });
+    });
+  });
+  qBack.addEventListener("click", function () { if (quizState.i > 0) showStep(quizState.i - 1); });
+  $("#qrAgain").addEventListener("click", function () { store.del("hym-quiz"); reset(); var f = $("input", steps[0]); if (f) f.focus(); });
+  $("#qrGo").addEventListener("click", function () { applyFilter(this.dataset.goto); });
+  quiz.addEventListener("submit", function (e) { e.preventDefault(); });
+
+  /* ---------- Privacidad: exportar y borrar de verdad ---------- */
+  var privStatus = $("#privStatus");
+  var KEYS = ["hym-quiz", "hym-lang", "hym-theme"];
+  $("#exportBtn").addEventListener("click", function () {
+    var data = {};
+    KEYS.forEach(function (k) { var v = store.get(k); if (v != null) { try { data[k] = JSON.parse(v); } catch (e) { data[k] = v; } } });
+    if (!Object.keys(data).length) { privStatus.textContent = t("empty"); return; }
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "hack-your-mind-datos.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    privStatus.textContent = t("exported");
+  });
+  $("#deleteBtn").addEventListener("click", function () {
+    if (!window.confirm(t("confirm"))) return;
+    KEYS.forEach(store.del);
+    root.removeAttribute("data-theme");
+    constellation.recolor();
+    reset();
+    privStatus.textContent = t("deleted");
+  });
+
+  /* ---------- La constelación: puntos sueltos que se ordenan en la H ---------- */
+  var constellation = (function () {
+    var hero = $("#top"), cv = $("#constellation"), ctx = cv.getContext("2d");
+    var W = 0, H = 0, parts = [], p = 0, anim = null, raf = null, visible = true, colors = {}, formedOnce = false, hAnchorY = 0;
+    function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var x = Math.imul(seed ^ seed >>> 15, 1 | seed); x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x; return ((x ^ x >>> 14) >>> 0) / 4294967296; }; }
+    function readColors() {
+      var cs = getComputedStyle(root);
+      colors = { dot: cs.getPropertyValue("--line").trim(), ink: cs.getPropertyValue("--ink").trim(), spark: cs.getPropertyValue("--chispa").trim() };
+    }
+    function layout() {
+      var r = hero.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      cv.style.width = W + "px"; cv.style.height = H + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var wide = W >= 1100, step = wide ? 26 : 16, cols = 7, rows = 11, g = 24;
+      var cx = wide ? W * 0.79 : W / 2;
+      var cy = wide ? H * 0.5 : H - ((rows - 1) * step) / 2 - 64;
+      var ox = cx - (cols - 1) * step / 2, oy = cy - (rows - 1) * step / 2;
+      hAnchorY = cy;
+      var rnd = rng(11);
+      parts = [];
+      function mk(tx, ty, isH, center) { parts.push({ tx: tx, ty: ty, isH: isH, center: center, sx: rnd() * W, sy: rnd() * H, ph: rnd() * 6.283, sp: 0.5 + rnd() }); }
+      for (var y = 0; y < rows; y++) { mk(ox, oy + y * step, true, false); mk(ox + (cols - 1) * step, oy + y * step, true, false); }
+      for (var x = 1; x < cols - 1; x++) mk(ox + x * step, oy + 5 * step, true, x === 3);
+      // El resto se asienta en una grilla tenue, lejos de la H.
+      var n = Math.round(Math.min(150, (W * H) / 8000));
+      var pad = step * 1.5;
+      for (var k = 0; k < n; k++) {
+        var tx, ty, tries = 0;
+        do { tx = Math.round(rnd() * (W / g)) * g; ty = Math.round(rnd() * (H / g)) * g; tries++; }
+        while (tries < 8 && tx > ox - pad && tx < ox + (cols - 1) * step + pad && ty > oy - pad && ty < oy + (rows - 1) * step + pad);
+        mk(tx, ty, false, false);
+      }
+    }
+    function ease(x) { return 1 - Math.pow(1 - x, 3); }
+    function draw(now) {
+      var e = ease(p);
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < parts.length; i++) {
+        var q = parts[i];
+        var dx = Math.sin(now * 0.00025 * q.sp + q.ph) * 12, dy = Math.cos(now * 0.0002 * q.sp + q.ph) * 12;
+        var x = (q.sx + dx) * (1 - e) + q.tx * e, y = (q.sy + dy) * (1 - e) + q.ty * e;
+        var rad = q.isH ? 1.6 + (q.center ? 3.6 : 1.4) * e : 1.6;
+        ctx.globalAlpha = 1; ctx.fillStyle = colors.dot;
+        ctx.beginPath(); ctx.arc(x, y, rad, 0, 6.283); ctx.fill();
+        if (q.isH && e > 0) {
+          ctx.globalAlpha = e; ctx.fillStyle = q.center ? colors.spark : colors.ink;
+          ctx.beginPath(); ctx.arc(x, y, rad, 0, 6.283); ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+    }
+    function frame(now) {
+      if (anim) {
+        var k = Math.min(1, (now - anim.t0) / anim.d);
+        p = anim.from + (anim.to - anim.from) * k;
+        if (k >= 1) anim = null;
+      }
+      draw(now);
+      raf = (visible && (anim || p < 1)) ? requestAnimationFrame(frame) : null;
+    }
+    function kick() { if (!raf && visible) raf = requestAnimationFrame(frame); }
+    function formTo(v) {
+      if (reduce.matches) { p = 1; draw(0); return; }
+      anim = { from: p, to: v, t0: performance.now(), d: 900 };
+      kick();
+    }
+    readColors(); layout();
+    if (reduce.matches) { p = 1; draw(0); }
+    else {
+      kick();
+      // Se ordenan solos una vez (mejora 8); el clic queda como sorpresa.
+      // En móvil la H queda bajo el texto: esperamos a que entre en pantalla.
+      var autoForm = function () {
+        if (formedOnce) return;
+        if (hero.getBoundingClientRect().top + hAnchorY > window.innerHeight - 40) return;
+        formedOnce = true; formTo(1);
+        window.removeEventListener("scroll", autoForm);
+      };
+      setTimeout(function () { autoForm(); if (!formedOnce) window.addEventListener("scroll", autoForm, { passive: true }); }, 1500);
+    }
+    hero.addEventListener("click", function (e) {
+      if (e.target.closest("a, button")) return;
+      formedOnce = true;
+      formTo(p > 0.5 ? 0 : 1);
+    });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; if (visible && !reduce.matches) kick(); }).observe(hero);
+    }
+    if ("ResizeObserver" in window) {
+      var lastW = 0, lastH = 0;
+      new ResizeObserver(function () {
+        var r = hero.getBoundingClientRect();
+        if (Math.abs(r.width - lastW) < 1 && Math.abs(r.height - lastH) < 1) return;
+        lastW = r.width; lastH = r.height;
+        layout(); draw(performance.now());
+      }).observe(hero);
+    }
+    return { recolor: function () { readColors(); draw(performance.now()); } };
+  })();
+
+  /* ---------- Arranque ---------- */
+  showStep(0);
+  var saved = null;
+  try { saved = JSON.parse(store.get("hym-quiz") || "null"); } catch (e) {}
+  if (saved && WORLD_ORDER.indexOf(saved.world) > -1) finish(saved.world, false);
+  setLang(lang, false);
+  applyFilter("all");
+})();
+</script>
+</body>
+</html>
